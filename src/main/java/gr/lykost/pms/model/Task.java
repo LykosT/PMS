@@ -1,11 +1,13 @@
 package gr.lykost.pms.model;
 
-import gr.lykost.pms.core.enums.Priorities;
+import gr.lykost.pms.core.enums.Priority;
 import gr.lykost.pms.core.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDate;
-import java.util.UUID;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -14,47 +16,43 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Table(name = "tasks")
-public class Task extends AbstractTimestamp {
+public class Task extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, updatable = false, length = 36)
-    private String uuid;
-
-    @Column(nullable = false, length = 200)
-    private String title;
+    @Column(nullable = false)
+    private String name;
 
     @Column(length = 2000)
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false)
     private TaskStatus status;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 30)
-    private Priorities priority;
-
-    @Column
-    private Integer estimatedHours;
+    @Column(nullable = false)
+    private Priority priority;
 
     @Column
     private LocalDate dueDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "assignee_id")
-    private Employee assignee;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    // Task -> Project (N:1)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
-    @PrePersist
-    protected void onCreate() {
-        if (uuid == null) {
-            uuid = UUID.randomUUID().toString();
-        }
-    }
+    // Task <-> Employee
+    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<EmployeeTask> employeeTasks = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "task_team",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "team_id")
+    )
+    private Set<Team> teams = new HashSet<>();
 }

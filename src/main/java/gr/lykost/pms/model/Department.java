@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -13,31 +12,28 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Table(name = "departments")
-public class Department extends AbstractTimestamp {
+public class Department extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, updatable = false, length = 36)
-    private String uuid;
+    @Column(nullable = false)
+    private String name;
 
-    @Column(nullable = false, length = 150)
-    private String title;
-
-    @Column(length = 500)
+    @Column
     private String description;
 
-    @OneToMany(
-            mappedBy = "department",
-            fetch = FetchType.LAZY
-    )
+    // Department -> Employees (1:N)
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
     private Set<Employee> employees = new HashSet<>();
 
-    @PrePersist
-    protected void onCreate() {
-        if (uuid == null) {
-            uuid = UUID.randomUUID().toString();
-        }
-    }
+    // Department -> Teams (1:N)
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
+    private Set<Team> teams = new HashSet<>();
+
+    // Department -> Projects (1:N)
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
+    private Set<Project> projects = new HashSet<>();
+
 }
