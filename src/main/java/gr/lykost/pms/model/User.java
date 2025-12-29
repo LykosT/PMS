@@ -12,14 +12,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Table(name = "users")
-public class User extends AbstractTimestamp {
+public class User extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false, unique = true, updatable = false, length = 36)
-    private String uuid;
 
     @Column(nullable = false, unique = true, length = 100)
     private String username;
@@ -34,18 +31,8 @@ public class User extends AbstractTimestamp {
     @Column(nullable = false)
     private boolean active = true;
 
-    @OneToOne(
-            mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
-    private Employee employeeProfile;
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "employee_id", nullable = false, unique = true)
+    private Employee employee;
 
-    @PrePersist
-    protected void onCreate() {
-        if (uuid == null) {
-            uuid = UUID.randomUUID().toString();
-        }
-    }
 }

@@ -1,13 +1,12 @@
 package gr.lykost.pms.model;
 
-import gr.lykost.pms.core.enums.Priorities;
+import gr.lykost.pms.core.enums.Priority;
 import gr.lykost.pms.core.enums.ProjectStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -16,28 +15,25 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Table(name = "projects")
-public class Project extends AbstractTimestamp {
+public class Project extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, updatable = false, length = 36)
-    private String uuid;
+    @Column(nullable = false)
+    private String name;
 
-    @Column(nullable = false, length = 200)
-    private String title;
-
-    @Column(length = 2000)
+    @Column
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false)
     private ProjectStatus status;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 30)
-    private Priorities priority;
+    @Column(nullable = false)
+    private Priority priority;
 
     @Column
     private LocalDate startDate;
@@ -51,18 +47,17 @@ public class Project extends AbstractTimestamp {
     @Column
     private Integer estimatedHours;
 
+    // Project -> Department (N:1)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "department_id", nullable = false)
+    private Department department;
+
+    // Project -> Manager (User)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
     private User manager;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "project_employee",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "employee_id")
-    )
-    private Set<Employee> employees = new HashSet<>();
-
+    // Project -> Tasks (1:N)
     @OneToMany(
             mappedBy = "project",
             fetch = FetchType.LAZY,
@@ -71,10 +66,4 @@ public class Project extends AbstractTimestamp {
     )
     private Set<Task> tasks = new HashSet<>();
 
-    @PrePersist
-    protected void onCreate() {
-        if (uuid == null) {
-            uuid = UUID.randomUUID().toString();
-        }
-    }
 }
