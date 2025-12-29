@@ -10,9 +10,13 @@ import java.util.Optional;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    List<Task> findByProject_Id(Long projectId);
-    List<Task> findByAssignee_Id(Long employeeId);
-    List<Task> findByStatus(TaskStatus status);
-
     Optional<Task> findByUuid(String uuid);
+
+    List<Task> findByProject_Id(Long projectId);
+
+    List<Task> findByAssignedToEmployee_Id(Long employeeId);
+
+    List<Task> findByStatus(String status);
+
+    long countById(Long id);
 }
