@@ -9,8 +9,13 @@ import java.util.Optional;
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Long> {
 
-    List<Team> findByDepartment_Id(Long departmentId);
+    Optional<Team> findByUuid(String uuid);
+
+    List<Team> findByProject_Id(Long projectId);
+
     List<Team> findByEmployees_Id(Long employeeId);
 
-    Optional<Team> findByUuid(String uuid);
+    List<Team> findByNameContainingIgnoreCase(String name);
+
+    long countById(Long id);
 }

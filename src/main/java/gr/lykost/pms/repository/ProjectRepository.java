@@ -9,10 +9,17 @@ import java.util.Optional;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
+    long countProjectsById(Long departmentId);
+
     Optional<Project> findByUuid(String uuid);
 
-    boolean existsByTitle(String title);
+    boolean existsByName(String Name);
 
-    List<Project> findByManager_Id(Long managerId);
+    List<Project> findByNameContainingIgnoreCase(String name);
+
+    List<Project> findByDepartment_Id(Long departmentId);
+
+    List<Project> findByTeams_Id(Long teamId);
+
     List<Project> findByEmployees_Id(Long employeeId);
 }
