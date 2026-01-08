@@ -36,4 +36,8 @@ public class Department extends AbstractEntity {
     @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
     private Set<Project> projects = new HashSet<>();
 
+    // Department -> Manager
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "manager_id", nullable = false)
+    private Employee manager;
 }
