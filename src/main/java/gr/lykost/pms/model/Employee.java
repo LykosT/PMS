@@ -5,6 +5,7 @@ import gr.lykost.pms.core.enums.SeniorityLevel;
 import jakarta.persistence.*;
 import lombok.*;
 
+import javax.management.relation.Role;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,7 +41,7 @@ public class Employee extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     @Column
-    private SeniorityLevel seniority;
+    private SeniorityLevel seniorityLevel;
 
     @Enumerated(EnumType.STRING)
     @Column
@@ -51,28 +52,25 @@ public class Employee extends AbstractEntity {
 
     // Employee -> Department (N:1)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "department_id")
+    @JoinColumn(name = "department_id", nullable = false)
     private Department department;
 
-    // Employee <-> User (1:1, inverse)
-    @OneToOne(mappedBy = "employee", fetch = FetchType.EAGER)
-    private User user;
-
-    // Employee <-> EmployeeRole (M:N)
+    // Employee <-> BusinessRole (M:N)
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "employee_role",
+            name = "employee_businessrole",
             joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+            inverseJoinColumns = @JoinColumn(name = "businessrole_id")
     )
-    private Set<EmployeeRole> employeeRoles = new HashSet<>();
+    private Set<BusinessRole> businessRoles = new HashSet<>();
 
-    // Employee <-> Team (M:N, inverse)
-    @ManyToMany(mappedBy = "employees", fetch = FetchType.LAZY)
-    private Set<Team> teams = new HashSet<>();
+    // Employee -> Team (N:1)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "team_id", nullable = false)
+    private Team team;
 
-    // Employee <-> Task (via join entity)
-    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
-    private Set<EmployeeTask> employeeTasks = new HashSet<>();
+    // Employee -> Tasks (1:N)
+    @OneToMany(mappedBy = "assignee", fetch = FetchType.LAZY)
+    private Set<Task> tasks = new HashSet<>();
 
 }

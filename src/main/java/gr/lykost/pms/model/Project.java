@@ -29,7 +29,7 @@ public class Project extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ProjectStatus status;
+    private ProjectStatus projectStatus;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -38,15 +38,6 @@ public class Project extends AbstractEntity {
     @Column
     private LocalDate startDate;
 
-    @Column
-    private LocalDate endDate;
-
-    @Column
-    private LocalDate deadline;
-
-    @Column
-    private Integer estimatedHours;
-
     // Project -> Department (N:1)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "department_id", nullable = false)
@@ -54,16 +45,15 @@ public class Project extends AbstractEntity {
 
     // Project -> Manager (User)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "manager_id")
-    private User manager;
+    @JoinColumn(name = "manager_id", nullable = false)
+    private Employee manager;
 
-    // Project -> Tasks (1:N)
-    @OneToMany(
-            mappedBy = "project",
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    // Project -> Teams
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    private Set<Team> teams = new HashSet<>();
+
+    // Project -> Tasks
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
     private Set<Task> tasks = new HashSet<>();
 
 }

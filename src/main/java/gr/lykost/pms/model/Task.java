@@ -30,7 +30,7 @@ public class Task extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TaskStatus status;
+    private TaskStatus TaskStatus;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -44,15 +44,13 @@ public class Task extends AbstractEntity {
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
-    // Task <-> Employee
-    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<EmployeeTask> employeeTasks = new HashSet<>();
+    // Task -> Assignee (Employee)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "assignee_id")
+    private Employee assignee;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "task_team",
-            joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "team_id")
-    )
-    private Set<Team> teams = new HashSet<>();
+    // Task -> Team (N:1)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "team_id", nullable = false)
+    private Team team;
 }
