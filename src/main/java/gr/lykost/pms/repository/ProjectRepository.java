@@ -1,5 +1,7 @@
 package gr.lykost.pms.repository;
 
+import gr.lykost.pms.core.enums.ProjectStatus;
+import gr.lykost.pms.model.Department;
 import gr.lykost.pms.model.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -13,13 +15,10 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     Optional<Project> findByUuid(String uuid);
 
-    boolean existsByName(String Name);
-
-    List<Project> findByNameContainingIgnoreCase(String name);
-
     List<Project> findByDepartment_Id(Long departmentId);
 
-    List<Project> findByTeams_Id(Long teamId);
+    List<Project> findByDepartment(Department department);
 
-    List<Project> findByEmployees_Id(Long employeeId);
+    List<Project> findByProjectStatus(ProjectStatus status);
+
 }

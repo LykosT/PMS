@@ -1,5 +1,7 @@
 package gr.lykost.pms.repository;
 
+import gr.lykost.pms.model.Department;
+import gr.lykost.pms.model.Project;
 import gr.lykost.pms.model.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -11,11 +13,11 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
 
     Optional<Team> findByUuid(String uuid);
 
-    List<Team> findByProject_Id(Long projectId);
-
-    List<Team> findByEmployees_Id(Long employeeId);
-
-    List<Team> findByNameContainingIgnoreCase(String name);
-
     long countById(Long id);
+
+    List<Team> findByDepartment(Department department);
+
+    List<Team> findByProject(Project project);
+
+    boolean existsByNameAndDepartment(String name, Department department);
 }
