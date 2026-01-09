@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeReadDTO {
-    private Long id;
+
     private String uuid;
     private String firstName;
     private String lastName;
@@ -21,12 +21,11 @@ public class EmployeeReadDTO {
     private String phone;
     private SeniorityLevel seniorityLevel;
     private EmployeeStatus employeeStatus;
-    private boolean active;
-    private Long departmentId;
-    private String departmentName;
-    private Long teamId;
-    private String teamName;
-    private Set<String> businessRoleNames;
+//    private Long departmentId;
+//    private String departmentName;
+//    private Long teamId;
+//    private String teamName;
+//    private Set<String> businessRoleNames;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
