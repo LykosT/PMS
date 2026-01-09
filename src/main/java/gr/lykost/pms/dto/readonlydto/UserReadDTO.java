@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserReadDTO {
-    private Long id;
+
     private String uuid;
     private String username;
     private SystemRole systemRole;

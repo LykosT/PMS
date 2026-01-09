@@ -1,8 +1,8 @@
 package gr.lykost.pms.repository;
 
-import gr.lykost.pms.model.Department;
+//import gr.lykost.pms.model.Department;
 import gr.lykost.pms.model.Employee;
-import gr.lykost.pms.model.Team;
+//import gr.lykost.pms.model.Team;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -14,7 +14,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     long countById(Long employeeId);
 
-    long countByDepartmentId(Long departmentId);
+//    long countByDepartmentId(Long departmentId);
 
     boolean existsByEmail(String email);
 
@@ -22,13 +22,13 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     Optional<Employee> findByEmail(String email);
 
-    List<Employee> findByDepartment(Department department);
+//    List<Employee> findByDepartment(Department department);
 
-    List<Employee> findByTeam(Team team);
+//    List<Employee> findByTeam(Team team);
 
-    List<Employee> findByActiveTrue();
+//    List<Employee> findByIsActiveTrue();
 
-    List<Employee> findByDepartment_Id(Long departmentId);
+//    List<Employee> findByDepartment_Id(Long departmentId);
 
-    List<Employee> findByTeam_Id(Long teamId);
+//    List<Employee> findByTeam_Id(Long teamId);
 }

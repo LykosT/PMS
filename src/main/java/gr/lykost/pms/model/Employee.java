@@ -4,6 +4,7 @@ import gr.lykost.pms.core.enums.EmployeeStatus;
 import gr.lykost.pms.core.enums.SeniorityLevel;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.management.relation.Role;
 import java.util.HashSet;
@@ -47,30 +48,27 @@ public class Employee extends AbstractEntity {
     @Column
     private EmployeeStatus employeeStatus;
 
-    @Column(nullable = false)
-    private boolean active = true;
-
-    // Employee -> Department (N:1)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "department_id", nullable = false)
-    private Department department;
-
-    // Employee <-> BusinessRole (M:N)
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "employee_businessrole",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "businessrole_id")
-    )
-    private Set<BusinessRole> businessRoles = new HashSet<>();
-
-    // Employee -> Team (N:1)
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "team_id", nullable = false)
-    private Team team;
-
-    // Employee -> Tasks (1:N)
-    @OneToMany(mappedBy = "assignee", fetch = FetchType.LAZY)
-    private Set<Task> tasks = new HashSet<>();
+//    // Employee -> Department (N:1)
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "department_id", nullable = false)
+//    private Department department;
+//
+//    // Employee <-> BusinessRole (M:N)
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(
+//            name = "employee_businessrole",
+//            joinColumns = @JoinColumn(name = "employee_id"),
+//            inverseJoinColumns = @JoinColumn(name = "businessrole_id")
+//    )
+//    private Set<BusinessRole> businessRoles = new HashSet<>();
+//
+//    // Employee -> Team (N:1)
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "team_id", nullable = false)
+//    private Team team;
+//
+//    // Employee -> Tasks (1:N)
+//    @OneToMany(mappedBy = "assignee", fetch = FetchType.LAZY)
+//    private Set<Task> tasks = new HashSet<>();
 
 }
