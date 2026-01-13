@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="content">
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Employee Directory</h4>
+            <a th:href="@{/employee/create}" class="btn btn-light btn-sm fw-bold">
+                <i class="bi bi-person-plus-fill me-1"></i> Add New
+            </a>
+        </div>
+
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show m-3" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="card-body p-0">
+
+            <div th:if="${#lists.isEmpty(employees)}" class="text-center py-5">
+                <div class="mb-3">
+                    <i class="bi bi-people text-muted" style="font-size: 3rem;"></i>
+                </div>
+                <h5 class="text-muted">No employees found</h5>
+                <p class="text-muted small">Get started by registering a new employee.</p>
+                <a th:href="@{/employee/create}" class="btn btn-outline-primary btn-sm mt-2">Register Now</a>
+            </div>
+
+            <div th:unless="${#lists.isEmpty(employees)}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle mb-0">
+                    <thead class="table-light text-secondary">
+                    <tr>
+                        <th scope="col" class="ps-4">Employee</th>
+                        <th scope="col">Role & Username</th>
+                        <th scope="col">Level</th>
+                        <th scope="col">Status</th>
+                        <th scope="col" class="text-end pe-4">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr th:each="emp : ${employees}">
+
+                        <td class="ps-4">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar bg-light text-primary rounded-circle d-flex justify-content-center align-items-center me-3 border"
+                                     style="width: 40px; height: 40px; font-weight: bold;">
+                                    <span th:text="${(emp.firstName != null ? #strings.substring(emp.firstName,0,1) : '') + (emp.lastName != null ? #strings.substring(emp.lastName,0,1) : '')}">JD</span>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0" th:text="${emp.firstName + ' ' + emp.lastName}">John Doe</h6>
+                                    <small class="text-muted" th:text="${emp.email}">john@example.com</small>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <span class="d-block text-dark fw-medium"
+                                  th:text="${emp.user?.systemRole}">ADMIN</span>
+                            <small class="text-muted"
+                                   th:text="${emp.user?.username}">username</small>
+                        </td>
+
+                        <td th:text="${emp.seniorityLevel}">Senior</td>
+
+                        <td>
+                            <span class="badge rounded-pill"
+                                  th:classappend="${emp.employeeStatus.name() == 'ACTIVE' ? 'bg-success' : (emp.employeeStatus.name() == 'ON_LEAVE' ? 'bg-warning text-dark' : 'bg-secondary')}"
+                                  th:text="${emp.employeeStatus}">
+                              Active
+                            </span>
+                        </td>
+
+                        <td class="text-end pe-4">
+                            <div class="btn-group">
+                                <a th:href="@{/employee/edit/{id}(id=${emp.id})}"
+                                   class="btn btn-sm btn-outline-secondary"
+                                   title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+
+                                <a th:href="@{/employee/delete/{id}(id=${emp.id})}"
+                                   class="btn btn-sm btn-outline-danger"
+                                   title="Delete"
+                                   onclick="return confirm('Are you sure you want to delete this employee? This action cannot be undone.');">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="card-footer bg-light text-muted small" th:unless="${#lists.isEmpty(employees)}">
+            Showing all <span th:text="${#lists.size(employees)}">0</span> employees.
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
