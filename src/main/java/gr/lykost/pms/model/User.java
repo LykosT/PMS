@@ -57,4 +57,5 @@ public class User extends AbstractEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() { return isActive; }
+
 }
