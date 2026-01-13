@@ -3,9 +3,6 @@
 ## Prerequisites
 
 Before running the application, make sure you have the following installed:
-
-* Java JDK 17 (or the version required by the project)
-* Gradle (optional – the project uses Gradle Wrapper)
 * MySQL Server running
 * Git Bash (for Windows users)
 
