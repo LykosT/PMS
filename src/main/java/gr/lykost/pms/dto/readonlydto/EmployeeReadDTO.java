@@ -2,21 +2,20 @@ package gr.lykost.pms.dto.readonlydto;
 
 import gr.lykost.pms.core.enums.EmployeeStatus;
 import gr.lykost.pms.core.enums.SeniorityLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class EmployeeReadDTO {
 
     private String uuid;
     private String firstName;
     private String lastName;
-    private String fullName;
     private String email;
     private String phone;
     private SeniorityLevel seniorityLevel;

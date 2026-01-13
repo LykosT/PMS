@@ -48,6 +48,9 @@ public class Employee extends AbstractEntity {
     @Column
     private EmployeeStatus employeeStatus;
 
+    @OneToOne(mappedBy = "employee", fetch = FetchType.EAGER)
+    private User user;
+
 //    // Employee -> Department (N:1)
 //    @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @JoinColumn(name = "department_id", nullable = false)
