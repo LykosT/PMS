@@ -3,9 +3,8 @@
 ## Prerequisites
 
 Before running the application, make sure you have the following installed:
-* MySQL Server running
-* Git Bash (for Windows users)
 
+* MySQL Server (running and accessible)
 ---
 
 ## Configuration
@@ -26,18 +25,22 @@ Set the following environment variables according to your environment:
 
 ### Option 2: Configure Directly in `application.properties`
 
-You may also configure values **directly inside `application.properties`** if preferred.
+You may also configure values **directly inside `application-dev.properties`** if preferred.
 
 ---
 
 ## Running the Application
 
-To start the application using **Git Bash**, navigate to the project root directory and run:
+To start the application using command prompt, navigate to the project root directory and run:
 
-```bash
+```
+gradlew clean bootRun
+```
+To start the application using Git Bash or PowerShell , navigate to the project root directory and run:
+
+```
 ./gradlew clean bootRun
 ```
-
 ---
 
 ## Database Initialization
