@@ -99,7 +99,9 @@
         </div>
 
         <div class="mt-4 d-grid gap-2 d-md-flex justify-content-md-end">
-          <a th:href="@{/employee}" class="btn btn-secondary me-md-2">Cancel</a>
+          <a th:href="@{/employee/view}"
+             th:classappend="${view == 'employee-view' ? 'active' : ''}"
+             class="btn btn-secondary me-md-2">Cancel</a>
 
           <button type="submit" class="btn btn-primary px-4">
             <span th:text="${employeeId} ? 'Update Employee' : 'Create Employee'">Create Employee</span>
