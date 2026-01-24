@@ -2,12 +2,14 @@ package gr.lykost.pms.controller;
 
 import gr.lykost.pms.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @RequiredArgsConstructor
+@PreAuthorize("isAuthenticated()")
 public class HomeController {
 
     private final EmployeeRepository employeeRepository;

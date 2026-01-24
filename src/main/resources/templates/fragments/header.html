@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <body>
 
 <header th:fragment="header">
@@ -19,7 +19,8 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/employee/create}"
-                           th:classappend="${view == 'employee-form' ? 'active' : ''}">Register Employee</a>
+                           th:classappend="${view == 'employee-form' ? 'active' : ''}"
+                           sec:authorize="!hasRole('USER')">Register Employee</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/employee/view}"
