@@ -13,6 +13,7 @@ import gr.lykost.pms.repository.UserRepository;
 import gr.lykost.pms.service.IEmployeeUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,6 +28,7 @@ public class EmployeeUserController {
     private final IEmployeeUserService employeeUserService;
     private final EmployeeMapper employeeMapper;
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @GetMapping("/create")
     public String showCreateEmployeeForm(Model model) {
         populateFormAttributes(model);
@@ -35,6 +37,7 @@ public class EmployeeUserController {
         return "index";
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER') or hasRole('USER')")
     @GetMapping("/view")
     public String listEmployees(Model model) {
         model.addAttribute("employees", employeeUserService.findAllEmployees());
@@ -42,7 +45,7 @@ public class EmployeeUserController {
         return "index";
     }
 
-
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @PostMapping("/create")
     public String createEmployee(@Valid @ModelAttribute("employeeDto") EmployeeUserCreateDTO employeeDto,
                                  BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
@@ -73,6 +76,7 @@ public class EmployeeUserController {
         model.addAttribute("employeeStatuses", EmployeeStatus.values());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/delete/{id}")
     public String deleteEmployee(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
@@ -84,6 +88,7 @@ public class EmployeeUserController {
         return "redirect:/employee/view";
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         Employee employee = employeeUserService.findEmployeeById(id);
@@ -110,6 +115,7 @@ public class EmployeeUserController {
         return "index";
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     @PostMapping("/edit/{id}")
     public String updateEmployee(@PathVariable Long id,
                                  @Valid @ModelAttribute("employeeDto") EmployeeUserCreateDTO employeeDto,

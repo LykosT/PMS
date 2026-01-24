@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <body>
 
 <div th:fragment="content">
     <div class="card shadow-sm">
 
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center" sec:authorize="!hasRole('USER')">>
             <h4 class="mb-0">Employee Directory</h4>
             <a th:href="@{/employee/create}" class="btn btn-light btn-sm fw-bold">
                 <i class="bi bi-person-plus-fill me-1"></i> Add New
@@ -91,7 +91,8 @@
                                 <a th:href="@{/employee/delete/{id}(id=${emp.id})}"
                                    class="btn btn-sm btn-outline-danger"
                                    title="Delete"
-                                   onclick="return confirm('Are you sure you want to delete this employee? This action cannot be undone.');">
+                                   onclick="return confirm('Are you sure you want to delete this employee? This action cannot be undone.');"
+                                   sec:authorize="!hasRole('USER') and !hasRole('MANAGER')">
                                     <i class="bi bi-trash"></i>
                                 </a>
                             </div>
