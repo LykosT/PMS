@@ -5,6 +5,7 @@
 Before running the application, make sure you have the following installed:
 
 * MySQL Server (running and accessible)
+* Java Development Kit (JDK) 21
 ---
 
 ## Configuration
