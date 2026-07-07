@@ -1,20 +1,44 @@
 # Project Run Instructions
 
-## Prerequisites
+## Option 1: Run with Docker (recommended)
 
-Before running the application, make sure you have the following installed:
+The only prerequisite is Docker (with Compose). From the project root:
 
-* MySQL Server (running and accessible)
-* Java Development Kit (JDK) 21
+```
+docker compose up -d --build
+```
+
+This starts three containers:
+
+* **mysql** — MySQL 8.4 with a persistent volume (published on host port `3307` to avoid clashing with a local MySQL)
+* **backend** — the Spring Boot REST API on `http://localhost:8080`
+* **frontend** — the React app served by nginx on `http://localhost:3000` (proxies `/api` to the backend)
+
+Open **http://localhost:3000** and log in.
+
+To stop:
+
+```
+docker compose down
+```
+
+Add `-v` to also delete the database volume (fresh start).
+
+Credentials can be overridden with the `MYSQL_NAME`, `MYSQL_USER`, `MYSQL_PASSWORD` and `MYSQL_ROOT_PASSWORD` environment variables (see `docker-compose.yml` for the defaults).
+
 ---
 
-## Configuration
+## Option 2: Run locally (development)
 
-The application uses **external configuration** for environment-specific values such as server port and database credentials.
+### Prerequisites
 
-### Option 1: Using Environment Variables
+* MySQL Server (running and accessible)
+* Java Development Kit (JDK) 25
+* Node.js 20+ (for the frontend)
 
-Set the following environment variables according to your environment:
+### Configuration
+
+The backend uses **external configuration** for environment-specific values. Set these environment variables (each has a default in `application-dev.properties`):
 
 * `SERVER_PORT`
 * `MYSQL_HOST`
@@ -23,25 +47,28 @@ Set the following environment variables according to your environment:
 * `MYSQL_USER`
 * `MYSQL_PASSWORD`
 
+### Backend
 
-### Option 2: Configure Directly in `application.properties`
-
-You may also configure values **directly inside `application-dev.properties`** if preferred.
-
----
-
-## Running the Application
-
-To start the application using command prompt, navigate to the project root directory and run:
+From the project root:
 
 ```
-gradlew clean bootRun
+./gradlew bootRun
 ```
-To start the application using Git Bash or PowerShell , navigate to the project root directory and run:
+
+The REST API starts on `http://localhost:8080`.
+
+### Frontend
+
+In a second terminal:
 
 ```
-./gradlew clean bootRun
+cd frontend
+npm install
+npm run dev
 ```
+
+Open **http://localhost:5173** — the Vite dev server proxies `/api` requests to the backend on port 8080.
+
 ---
 
 ## Database Initialization
@@ -59,16 +86,4 @@ On startup, the application will automatically:
 
 You can use these credentials to log in after the application starts.
 
----
-
-## Stopping the Application
-
-To stop the application, press:
-
-```text
-CTRL + C
-```
-
-in the terminal where the application is running.
-
----
+> Note: passwords are stored with BCrypt. Users created before the BCrypt switch (other than `admin`, which is migrated automatically) need their password re-set.
