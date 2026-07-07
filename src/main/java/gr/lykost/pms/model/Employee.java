@@ -6,9 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
-import javax.management.relation.Role;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Getter

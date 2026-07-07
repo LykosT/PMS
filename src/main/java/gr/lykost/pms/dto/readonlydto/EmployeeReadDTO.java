@@ -2,10 +2,10 @@ package gr.lykost.pms.dto.readonlydto;
 
 import gr.lykost.pms.core.enums.EmployeeStatus;
 import gr.lykost.pms.core.enums.SeniorityLevel;
+import gr.lykost.pms.core.enums.SystemRole;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,6 +13,7 @@ import java.util.Set;
 @Setter
 public class EmployeeReadDTO {
 
+    private Long id;
     private String uuid;
     private String firstName;
     private String lastName;
@@ -20,6 +21,12 @@ public class EmployeeReadDTO {
     private String phone;
     private SeniorityLevel seniorityLevel;
     private EmployeeStatus employeeStatus;
+
+    // Linked user account (null when the employee has no account)
+    private String username;
+    private SystemRole systemRole;
+    private Boolean userActive;
+
 //    private Long departmentId;
 //    private String departmentName;
 //    private Long teamId;

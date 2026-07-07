@@ -43,5 +43,5 @@ public class EmployeeUserCreateDTO {
     @NotNull(message = "System Role is required")
     private SystemRole systemRole;
 
-    private boolean isActive = true;
+    private boolean active = true;
 }

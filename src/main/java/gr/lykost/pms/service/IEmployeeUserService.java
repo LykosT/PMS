@@ -1,23 +1,21 @@
 package gr.lykost.pms.service;
 
-import gr.lykost.pms.core.exceptions.DuplicateResourceException;
-import gr.lykost.pms.core.exceptions.InvalidOperationException;
 import gr.lykost.pms.dto.createdto.EmployeeUserCreateDTO;
-import gr.lykost.pms.model.Employee;
-import org.jspecify.annotations.Nullable;
+import gr.lykost.pms.dto.editdto.EmployeeUserEditDTO;
+import gr.lykost.pms.dto.readonlydto.EmployeeReadDTO;
 
 import java.util.List;
 
 
 public interface IEmployeeUserService {
-    Employee createNewEmployee(EmployeeUserCreateDTO employeeUserCreateDTO)
-            throws DuplicateResourceException, InvalidOperationException;
 
-    List<Employee> findAllEmployees();
+    EmployeeReadDTO createNewEmployee(EmployeeUserCreateDTO employeeUserCreateDTO);
+
+    List<EmployeeReadDTO> findAllEmployees();
 
     void deleteEmployee(Long id);
 
-    Employee findEmployeeById(Long id);
+    EmployeeReadDTO findEmployeeById(Long id);
 
-    Employee updateEmployee(Long id, EmployeeUserCreateDTO employeeDto);
+    EmployeeReadDTO updateEmployee(Long id, EmployeeUserEditDTO employeeDto);
 }

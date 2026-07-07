@@ -31,8 +31,14 @@ public class MasterUserInitializer implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
 
-        // If admin user already exists, do nothing
-        if (userRepository.existsByUsername("admin")) {
+        // If admin user already exists, only migrate a legacy plaintext password to BCrypt
+        var existingAdmin = userRepository.findByUsername("admin");
+        if (existingAdmin.isPresent()) {
+            User admin = existingAdmin.get();
+            if (!admin.getPassword().startsWith("$2")) {
+                admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+                userRepository.save(admin);
+            }
             return;
         }
 
