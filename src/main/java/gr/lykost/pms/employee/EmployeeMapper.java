@@ -34,6 +34,9 @@ public class EmployeeMapper {
                 user != null ? user.getUsername() : null,
                 user != null ? user.getSystemRole() : null,
                 user != null ? user.isActive() : null,
+                employee.getBusinessRoles().stream()
+                        .map(r -> new NamedRef(r.getId(), r.getName()))
+                        .collect(java.util.stream.Collectors.toSet()),
                 employee.getCreatedAt(),
                 employee.getUpdatedAt()
         );

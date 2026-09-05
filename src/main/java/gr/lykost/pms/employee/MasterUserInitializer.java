@@ -53,7 +53,8 @@ public class MasterUserInitializer implements ApplicationRunner {
                 "admin",
                 "admin",
                 SystemRole.ADMIN,
-                true
+                true,
+                new java.util.HashSet<>()
         );
 
         Employee employee = Employee.builder()

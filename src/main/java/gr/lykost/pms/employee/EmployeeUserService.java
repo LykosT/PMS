@@ -1,5 +1,7 @@
 package gr.lykost.pms.employee;
 
+import gr.lykost.pms.businessrole.BusinessRole;
+import gr.lykost.pms.businessrole.BusinessRoleRepository;
 import gr.lykost.pms.shared.exception.DuplicateResourceException;
 import gr.lykost.pms.shared.exception.ResourceNotFoundException;
 import gr.lykost.pms.employee.dto.EmployeeUserCreateDTO;
@@ -16,7 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -25,8 +29,20 @@ public class EmployeeUserService implements IEmployeeUserService {
 
     private final EmployeeRepository employeeRepository;
     private final UserRepository userRepository;
+    private final BusinessRoleRepository businessRoleRepository;
     private final EmployeeMapper employeeMapper;
     private final PasswordEncoder passwordEncoder;
+
+    private Set<BusinessRole> resolveBusinessRoles(Set<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return new HashSet<>();
+        }
+        return ids.stream()
+                .map(id -> businessRoleRepository.findById(id)
+                        .orElseThrow(() -> new ResourceNotFoundException("BusinessRole",
+                                "Business role not found with ID: " + id)))
+                .collect(java.util.stream.Collectors.toSet());
+    }
 
     @Override
     @Transactional
@@ -42,6 +58,7 @@ public class EmployeeUserService implements IEmployeeUserService {
         }
 
         Employee employee = employeeMapper.mapToEmployee(dto);
+        employee.setBusinessRoles(resolveBusinessRoles(dto.getBusinessRoleIds()));
         Employee savedEmployee = employeeRepository.save(employee);
         log.info("Employee created with ID: {}", savedEmployee.getId());
 
@@ -107,6 +124,7 @@ public class EmployeeUserService implements IEmployeeUserService {
         employee.setPhone(dto.getPhone());
         employee.setSeniorityLevel(dto.getSeniorityLevel());
         employee.setEmployeeStatus(dto.getEmployeeStatus());
+        employee.setBusinessRoles(resolveBusinessRoles(dto.getBusinessRoleIds()));
 
         User user = employee.getUser();
         if (user != null) {

@@ -1,5 +1,6 @@
 package gr.lykost.pms.employee;
 
+import gr.lykost.pms.businessrole.BusinessRole;
 import gr.lykost.pms.shared.AbstractEntity;
 
 import gr.lykost.pms.shared.enums.EmployeeStatus;
@@ -7,6 +8,9 @@ import gr.lykost.pms.shared.enums.SeniorityLevel;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -54,16 +58,16 @@ public class Employee extends AbstractEntity {
 //    @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @JoinColumn(name = "department_id", nullable = false)
 //    private Department department;
-//
-//    // Employee <-> BusinessRole (M:N)
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinTable(
-//            name = "employee_businessrole",
-//            joinColumns = @JoinColumn(name = "employee_id"),
-//            inverseJoinColumns = @JoinColumn(name = "businessrole_id")
-//    )
-//    private Set<BusinessRole> businessRoles = new HashSet<>();
-//
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "employee_businessrole",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "businessrole_id")
+    )
+    @Builder.Default
+    private Set<BusinessRole> businessRoles = new HashSet<>();
+
 //    // Employee -> Team (N:1)
 //    @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @JoinColumn(name = "team_id", nullable = false)

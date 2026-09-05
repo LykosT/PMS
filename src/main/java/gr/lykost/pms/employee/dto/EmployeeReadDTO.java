@@ -1,11 +1,14 @@
 package gr.lykost.pms.employee.dto;
 
+import gr.lykost.pms.employee.NamedRef;
 import gr.lykost.pms.shared.enums.EmployeeStatus;
 import gr.lykost.pms.shared.enums.SeniorityLevel;
 import gr.lykost.pms.shared.enums.SystemRole;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,7 +34,7 @@ public class EmployeeReadDTO {
 //    private String departmentName;
 //    private Long teamId;
 //    private String teamName;
-//    private Set<String> businessRoleNames;
+    private Set<NamedRef> businessRoles = new HashSet<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

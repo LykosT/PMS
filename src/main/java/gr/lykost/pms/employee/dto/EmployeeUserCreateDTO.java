@@ -6,6 +6,9 @@ import gr.lykost.pms.shared.enums.SystemRole;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -44,4 +47,6 @@ public class EmployeeUserCreateDTO {
     private SystemRole systemRole;
 
     private boolean active = true;
+
+    private Set<Long> businessRoleIds = new HashSet<>();
 }
