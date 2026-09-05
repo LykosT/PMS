@@ -1,4 +1,4 @@
-package gr.lykost.pms.dto.createdto;
+package gr.lykost.pms.project.dto;
 
 import gr.lykost.pms.shared.enums.Priority;
 import gr.lykost.pms.shared.enums.ProjectStatus;

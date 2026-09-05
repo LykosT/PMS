@@ -1,39 +1,31 @@
-package gr.lykost.pms.dto.createdto;
+package gr.lykost.pms.task.dto;
 
 import gr.lykost.pms.shared.enums.Priority;
 import gr.lykost.pms.shared.enums.TaskStatus;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskCreateDTO {
+public class TaskReadDTO {
 
-    @NotBlank(message = "Task name is required")
+    private Long id;
+    private String uuid;
     private String name;
-
     private String description;
-
-    @NotNull(message = "Task status is required")
     private TaskStatus taskStatus;
-
-    @NotNull(message = "Priority is required")
     private Priority priority;
-
     private LocalDate dueDate;
-
-    @NotNull(message = "Project ID is required")
     private Long projectId;
-
-    @NotNull(message = "Team ID is required")
+    private String projectName;
     private Long teamId;
-
-    // Optional: A task might not be assigned immediately
+    private String teamName;
     private Long assigneeId;
+    private String assigneeFullName;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

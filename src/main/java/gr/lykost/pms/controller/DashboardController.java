@@ -2,11 +2,11 @@ package gr.lykost.pms.controller;
 
 import gr.lykost.pms.dto.readonlydto.DashboardStatsDTO;
 import gr.lykost.pms.businessrole.BusinessRoleRepository;
-import gr.lykost.pms.repository.DepartmentRepository;
+import gr.lykost.pms.department.DepartmentRepository;
 import gr.lykost.pms.employee.EmployeeRepository;
-import gr.lykost.pms.repository.ProjectRepository;
-import gr.lykost.pms.repository.TaskRepository;
-import gr.lykost.pms.repository.TeamRepository;
+import gr.lykost.pms.project.ProjectRepository;
+import gr.lykost.pms.task.TaskRepository;
+import gr.lykost.pms.team.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;

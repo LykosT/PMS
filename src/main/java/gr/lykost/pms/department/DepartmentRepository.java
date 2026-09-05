@@ -1,6 +1,6 @@
-package gr.lykost.pms.repository;
+package gr.lykost.pms.department;
 
-import gr.lykost.pms.model.Department;
+import gr.lykost.pms.department.Department;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

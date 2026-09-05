@@ -1,7 +1,10 @@
-package gr.lykost.pms.model;
+package gr.lykost.pms.project;
 
 import gr.lykost.pms.shared.AbstractEntity;
 import gr.lykost.pms.employee.Employee;
+import gr.lykost.pms.department.Department;
+import gr.lykost.pms.team.Team;
+import gr.lykost.pms.task.Task;
 
 import gr.lykost.pms.shared.enums.Priority;
 import gr.lykost.pms.shared.enums.ProjectStatus;

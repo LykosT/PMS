@@ -1,8 +1,8 @@
-package gr.lykost.pms.controller;
+package gr.lykost.pms.task;
 
-import gr.lykost.pms.dto.createdto.TeamCreateDTO;
-import gr.lykost.pms.dto.readonlydto.TeamReadDTO;
-import gr.lykost.pms.service.TeamService;
+import gr.lykost.pms.task.dto.TaskCreateDTO;
+import gr.lykost.pms.task.dto.TaskReadDTO;
+import gr.lykost.pms.task.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,41 +12,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/teams")
+@RequestMapping("/api/tasks")
 @RequiredArgsConstructor
-public class TeamController {
+public class TaskController {
 
-    private final TeamService teamService;
+    private final TaskService taskService;
 
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
     @GetMapping
-    public List<TeamReadDTO> list() {
-        return teamService.findAll();
+    public List<TaskReadDTO> list() {
+        return taskService.findAll();
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @GetMapping("/{id}")
-    public TeamReadDTO get(@PathVariable Long id) {
-        return teamService.findById(id);
+    public TaskReadDTO get(@PathVariable Long id) {
+        return taskService.findById(id);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TeamReadDTO create(@Valid @RequestBody TeamCreateDTO dto) {
-        return teamService.create(dto);
+    public TaskReadDTO create(@Valid @RequestBody TaskCreateDTO dto) {
+        return taskService.create(dto);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @PutMapping("/{id}")
-    public TeamReadDTO update(@PathVariable Long id, @Valid @RequestBody TeamCreateDTO dto) {
-        return teamService.update(id, dto);
+    public TaskReadDTO update(@PathVariable Long id, @Valid @RequestBody TaskCreateDTO dto) {
+        return taskService.update(id, dto);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
-        teamService.delete(id);
+        taskService.delete(id);
     }
 }

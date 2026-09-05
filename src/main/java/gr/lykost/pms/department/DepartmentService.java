@@ -1,12 +1,12 @@
-package gr.lykost.pms.service;
+package gr.lykost.pms.department;
 
 import gr.lykost.pms.shared.exception.DuplicateResourceException;
 import gr.lykost.pms.shared.exception.ResourceNotFoundException;
-import gr.lykost.pms.dto.createdto.DepartmentCreateDTO;
-import gr.lykost.pms.dto.readonlydto.DepartmentReadDTO;
-import gr.lykost.pms.model.Department;
+import gr.lykost.pms.department.dto.DepartmentCreateDTO;
+import gr.lykost.pms.department.dto.DepartmentReadDTO;
+import gr.lykost.pms.department.Department;
 import gr.lykost.pms.employee.Employee;
-import gr.lykost.pms.repository.DepartmentRepository;
+import gr.lykost.pms.department.DepartmentRepository;
 import gr.lykost.pms.employee.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

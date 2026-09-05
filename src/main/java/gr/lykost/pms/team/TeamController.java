@@ -1,8 +1,8 @@
-package gr.lykost.pms.controller;
+package gr.lykost.pms.team;
 
-import gr.lykost.pms.dto.createdto.ProjectCreateDTO;
-import gr.lykost.pms.dto.readonlydto.ProjectReadDTO;
-import gr.lykost.pms.service.ProjectService;
+import gr.lykost.pms.team.dto.TeamCreateDTO;
+import gr.lykost.pms.team.dto.TeamReadDTO;
+import gr.lykost.pms.team.TeamService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,41 +12,41 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/projects")
+@RequestMapping("/api/teams")
 @RequiredArgsConstructor
-public class ProjectController {
+public class TeamController {
 
-    private final ProjectService projectService;
+    private final TeamService teamService;
 
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
     @GetMapping
-    public List<ProjectReadDTO> list() {
-        return projectService.findAll();
+    public List<TeamReadDTO> list() {
+        return teamService.findAll();
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @GetMapping("/{id}")
-    public ProjectReadDTO get(@PathVariable Long id) {
-        return projectService.findById(id);
+    public TeamReadDTO get(@PathVariable Long id) {
+        return teamService.findById(id);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProjectReadDTO create(@Valid @RequestBody ProjectCreateDTO dto) {
-        return projectService.create(dto);
+    public TeamReadDTO create(@Valid @RequestBody TeamCreateDTO dto) {
+        return teamService.create(dto);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     @PutMapping("/{id}")
-    public ProjectReadDTO update(@PathVariable Long id, @Valid @RequestBody ProjectCreateDTO dto) {
-        return projectService.update(id, dto);
+    public TeamReadDTO update(@PathVariable Long id, @Valid @RequestBody TeamCreateDTO dto) {
+        return teamService.update(id, dto);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
-        projectService.delete(id);
+        teamService.delete(id);
     }
 }

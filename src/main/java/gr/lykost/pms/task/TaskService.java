@@ -1,16 +1,16 @@
-package gr.lykost.pms.service;
+package gr.lykost.pms.task;
 
 import gr.lykost.pms.shared.exception.ResourceNotFoundException;
-import gr.lykost.pms.dto.createdto.TaskCreateDTO;
-import gr.lykost.pms.dto.readonlydto.TaskReadDTO;
+import gr.lykost.pms.task.dto.TaskCreateDTO;
+import gr.lykost.pms.task.dto.TaskReadDTO;
 import gr.lykost.pms.employee.Employee;
-import gr.lykost.pms.model.Project;
-import gr.lykost.pms.model.Task;
-import gr.lykost.pms.model.Team;
+import gr.lykost.pms.project.Project;
+import gr.lykost.pms.task.Task;
+import gr.lykost.pms.team.Team;
 import gr.lykost.pms.employee.EmployeeRepository;
-import gr.lykost.pms.repository.ProjectRepository;
-import gr.lykost.pms.repository.TaskRepository;
-import gr.lykost.pms.repository.TeamRepository;
+import gr.lykost.pms.project.ProjectRepository;
+import gr.lykost.pms.task.TaskRepository;
+import gr.lykost.pms.team.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

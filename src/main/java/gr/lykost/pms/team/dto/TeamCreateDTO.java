@@ -1,4 +1,4 @@
-package gr.lykost.pms.dto.createdto;
+package gr.lykost.pms.team.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
