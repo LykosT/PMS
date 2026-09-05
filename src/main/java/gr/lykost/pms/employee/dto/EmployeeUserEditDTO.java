@@ -10,7 +10,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -53,5 +52,6 @@ public class EmployeeUserEditDTO {
 
     private boolean active = true;
 
-    private Set<Long> businessRoleIds = new HashSet<>();
+    // null = leave business-role membership unchanged; empty set = clear all roles
+    private Set<Long> businessRoleIds = null;
 }

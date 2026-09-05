@@ -124,7 +124,9 @@ public class EmployeeUserService implements IEmployeeUserService {
         employee.setPhone(dto.getPhone());
         employee.setSeniorityLevel(dto.getSeniorityLevel());
         employee.setEmployeeStatus(dto.getEmployeeStatus());
-        employee.setBusinessRoles(resolveBusinessRoles(dto.getBusinessRoleIds()));
+        if (dto.getBusinessRoleIds() != null) {
+            employee.setBusinessRoles(resolveBusinessRoles(dto.getBusinessRoleIds()));
+        }
 
         User user = employee.getUser();
         if (user != null) {

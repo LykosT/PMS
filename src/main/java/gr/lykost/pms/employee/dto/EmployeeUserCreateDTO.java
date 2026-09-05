@@ -6,7 +6,6 @@ import gr.lykost.pms.shared.enums.SystemRole;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -48,5 +47,7 @@ public class EmployeeUserCreateDTO {
 
     private boolean active = true;
 
-    private Set<Long> businessRoleIds = new HashSet<>();
+    // null and empty behave identically on create (both yield no roles); kept null for
+    // symmetry with EmployeeUserEditDTO, where null vs. empty is meaningful.
+    private Set<Long> businessRoleIds = null;
 }

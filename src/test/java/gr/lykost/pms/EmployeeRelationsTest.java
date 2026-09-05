@@ -9,6 +9,7 @@ import org.springframework.mock.web.MockHttpSession;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -62,6 +63,65 @@ class EmployeeRelationsTest extends AbstractIntegrationTest {
                                  "username":"noroles","password":"secret123",
                                  "systemRole":"USER","active":true}"""))
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.businessRoles").isArray())
+                .andExpect(jsonPath("$.businessRoles").isEmpty());
+    }
+
+    @Test
+    void editOmittingBusinessRoleIdsPreservesExistingRoles() throws Exception {
+        long roleId = DomainFixtures.create(mvc, session, json, "/api/business-roles", """
+                {"name":"Preserve Role","description":"d"}""");
+
+        String createResponse = mvc.perform(post("/api/employees").with(csrf()).session(session)
+                        .contentType(APPLICATION_JSON).content("""
+                                {"firstName":"Keep","lastName":"Roles",
+                                 "email":"keeproles@pms.test","phone":"2100001004",
+                                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                                 "username":"keeproles","password":"secret123",
+                                 "systemRole":"USER","active":true,
+                                 "businessRoleIds":[%d]}""".formatted(roleId)))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+        long employeeId = json.readTree(createResponse).get("id").asLong();
+
+        mvc.perform(put("/api/employees/{id}", employeeId).with(csrf()).session(session)
+                        .contentType(APPLICATION_JSON).content("""
+                                {"firstName":"Keep","lastName":"Roles",
+                                 "email":"keeproles@pms.test","phone":"2100001004",
+                                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                                 "username":"keeproles",
+                                 "systemRole":"USER","active":true}"""))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.businessRoles[0].id").value((int) roleId))
+                .andExpect(jsonPath("$.businessRoles[0].name").value("Preserve Role"));
+    }
+
+    @Test
+    void editWithEmptyBusinessRoleIdsClearsExistingRoles() throws Exception {
+        long roleId = DomainFixtures.create(mvc, session, json, "/api/business-roles", """
+                {"name":"Clear Role","description":"d"}""");
+
+        String createResponse = mvc.perform(post("/api/employees").with(csrf()).session(session)
+                        .contentType(APPLICATION_JSON).content("""
+                                {"firstName":"Clear","lastName":"Roles",
+                                 "email":"clearroles@pms.test","phone":"2100001005",
+                                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                                 "username":"clearroles","password":"secret123",
+                                 "systemRole":"USER","active":true,
+                                 "businessRoleIds":[%d]}""".formatted(roleId)))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+        long employeeId = json.readTree(createResponse).get("id").asLong();
+
+        mvc.perform(put("/api/employees/{id}", employeeId).with(csrf()).session(session)
+                        .contentType(APPLICATION_JSON).content("""
+                                {"firstName":"Clear","lastName":"Roles",
+                                 "email":"clearroles@pms.test","phone":"2100001005",
+                                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                                 "username":"clearroles",
+                                 "systemRole":"USER","active":true,
+                                 "businessRoleIds":[]}"""))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.businessRoles").isArray())
                 .andExpect(jsonPath("$.businessRoles").isEmpty());
     }
