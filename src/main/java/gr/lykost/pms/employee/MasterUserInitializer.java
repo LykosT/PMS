@@ -1,4 +1,4 @@
-package gr.lykost.pms.authentication;
+package gr.lykost.pms.employee;
 
 import gr.lykost.pms.shared.enums.EmployeeStatus;
 import gr.lykost.pms.shared.enums.SeniorityLevel;

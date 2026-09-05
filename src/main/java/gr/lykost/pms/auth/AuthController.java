@@ -1,8 +1,8 @@
-package gr.lykost.pms.controller;
+package gr.lykost.pms.auth;
 
-import gr.lykost.pms.authentication.CustomUserDetails;
-import gr.lykost.pms.dto.LoginRequestDTO;
-import gr.lykost.pms.dto.readonlydto.AuthUserDTO;
+import gr.lykost.pms.auth.CustomUserDetails;
+import gr.lykost.pms.auth.dto.LoginRequestDTO;
+import gr.lykost.pms.auth.dto.AuthUserDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;

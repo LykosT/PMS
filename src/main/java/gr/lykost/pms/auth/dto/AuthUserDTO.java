@@ -1,4 +1,4 @@
-package gr.lykost.pms.dto.readonlydto;
+package gr.lykost.pms.auth.dto;
 
 import gr.lykost.pms.shared.enums.SystemRole;
 

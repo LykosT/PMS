@@ -1,4 +1,4 @@
-package gr.lykost.pms.dto;
+package gr.lykost.pms.auth.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

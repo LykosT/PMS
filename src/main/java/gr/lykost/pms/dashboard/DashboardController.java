@@ -1,6 +1,6 @@
-package gr.lykost.pms.controller;
+package gr.lykost.pms.dashboard;
 
-import gr.lykost.pms.dto.readonlydto.DashboardStatsDTO;
+import gr.lykost.pms.dashboard.dto.DashboardStatsDTO;
 import gr.lykost.pms.businessrole.BusinessRoleRepository;
 import gr.lykost.pms.department.DepartmentRepository;
 import gr.lykost.pms.employee.EmployeeRepository;

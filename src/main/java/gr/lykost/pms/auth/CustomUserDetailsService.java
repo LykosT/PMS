@@ -1,4 +1,4 @@
-package gr.lykost.pms.authentication;
+package gr.lykost.pms.auth;
 
 import gr.lykost.pms.employee.User;
 import gr.lykost.pms.employee.UserRepository;

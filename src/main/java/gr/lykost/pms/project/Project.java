@@ -3,16 +3,12 @@ package gr.lykost.pms.project;
 import gr.lykost.pms.shared.AbstractEntity;
 import gr.lykost.pms.employee.Employee;
 import gr.lykost.pms.department.Department;
-import gr.lykost.pms.team.Team;
-import gr.lykost.pms.task.Task;
 
 import gr.lykost.pms.shared.enums.Priority;
 import gr.lykost.pms.shared.enums.ProjectStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -55,13 +51,17 @@ public class Project extends AbstractEntity {
     private Employee manager;
 
     // Project -> Teams
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
-    @Builder.Default
-    private Set<Team> teams = new HashSet<>();
+    // Commented out to avoid a module cycle (project would depend on team,
+    // while team already depends on project).
+//    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+//    @Builder.Default
+//    private Set<Team> teams = new HashSet<>();
 
     // Project -> Tasks
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
-    @Builder.Default
-    private Set<Task> tasks = new HashSet<>();
+    // Commented out to avoid a module cycle (project would depend on task,
+    // while task already depends on project).
+//    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+//    @Builder.Default
+//    private Set<Task> tasks = new HashSet<>();
 
 }

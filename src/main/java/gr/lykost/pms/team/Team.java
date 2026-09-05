@@ -4,12 +4,9 @@ import gr.lykost.pms.shared.AbstractEntity;
 import gr.lykost.pms.employee.Employee;
 import gr.lykost.pms.department.Department;
 import gr.lykost.pms.project.Project;
-import gr.lykost.pms.task.Task;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -53,7 +50,9 @@ public class Team extends AbstractEntity {
 //    private Set<Employee> employees = new HashSet<>();
 
     // Team -> Tasks (1:N)
-    @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
-    @Builder.Default
-    private Set<Task> tasks = new HashSet<>();
+    // Commented out to avoid a module cycle (team would depend on task,
+    // while task already depends on team).
+//    @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
+//    @Builder.Default
+//    private Set<Task> tasks = new HashSet<>();
 }

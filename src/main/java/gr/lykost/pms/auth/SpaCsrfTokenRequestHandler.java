@@ -1,4 +1,4 @@
-package gr.lykost.pms.authentication;
+package gr.lykost.pms.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

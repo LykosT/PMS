@@ -1,4 +1,4 @@
-package gr.lykost.pms.authentication;
+package gr.lykost.pms.auth;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

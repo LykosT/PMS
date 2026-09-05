@@ -2,13 +2,9 @@ package gr.lykost.pms.department;
 
 import gr.lykost.pms.shared.AbstractEntity;
 import gr.lykost.pms.employee.Employee;
-import gr.lykost.pms.project.Project;
-import gr.lykost.pms.team.Team;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -36,14 +32,19 @@ public class Department extends AbstractEntity {
 //    private Set<Employee> employees = new HashSet<>();
 
     // Department -> Teams (1:N)
-    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
-    @Builder.Default
-    private Set<Team> teams = new HashSet<>();
+    // Commented out to avoid a module cycle (department would depend on team,
+    // while team already depends on department). Restore alongside a
+    // module-boundary-safe way to expose the inverse side if ever needed.
+//    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
+//    @Builder.Default
+//    private Set<Team> teams = new HashSet<>();
 
     // Department -> Projects (1:N)
-    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
-    @Builder.Default
-    private Set<Project> projects = new HashSet<>();
+    // Commented out to avoid a module cycle (department would depend on
+    // project, while project already depends on department).
+//    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
+//    @Builder.Default
+//    private Set<Project> projects = new HashSet<>();
 
     // Department -> Manager
     @ManyToOne(fetch = FetchType.LAZY)
