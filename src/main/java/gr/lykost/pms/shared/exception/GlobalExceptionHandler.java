@@ -1,6 +1,6 @@
-package gr.lykost.pms.core.exceptions;
+package gr.lykost.pms.shared.exception;
 
-import gr.lykost.pms.dto.readonlydto.ApiErrorDTO;
+import gr.lykost.pms.shared.ApiErrorDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

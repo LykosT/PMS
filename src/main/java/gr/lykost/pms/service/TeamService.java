@@ -1,6 +1,6 @@
 package gr.lykost.pms.service;
 
-import gr.lykost.pms.core.exceptions.ResourceNotFoundException;
+import gr.lykost.pms.shared.exception.ResourceNotFoundException;
 import gr.lykost.pms.dto.createdto.TeamCreateDTO;
 import gr.lykost.pms.dto.readonlydto.TeamReadDTO;
 import gr.lykost.pms.model.Department;

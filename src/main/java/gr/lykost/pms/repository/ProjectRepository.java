@@ -1,6 +1,6 @@
 package gr.lykost.pms.repository;
 
-import gr.lykost.pms.core.enums.ProjectStatus;
+import gr.lykost.pms.shared.enums.ProjectStatus;
 import gr.lykost.pms.model.Department;
 import gr.lykost.pms.model.Project;
 import org.springframework.data.jpa.repository.JpaRepository;

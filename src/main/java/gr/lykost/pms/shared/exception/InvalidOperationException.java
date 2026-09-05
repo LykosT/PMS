@@ -1,4 +1,4 @@
-package gr.lykost.pms.core.exceptions;
+package gr.lykost.pms.shared.exception;
 
 public class InvalidOperationException extends ResourceGenericException {
     private static final String DEFAULT_CODE = "Invalid Argument Operation";

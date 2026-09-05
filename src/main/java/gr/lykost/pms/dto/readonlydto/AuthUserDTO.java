@@ -1,6 +1,6 @@
 package gr.lykost.pms.dto.readonlydto;
 
-import gr.lykost.pms.core.enums.SystemRole;
+import gr.lykost.pms.shared.enums.SystemRole;
 
 /**
  * The authenticated user's identity, returned by the auth endpoints.

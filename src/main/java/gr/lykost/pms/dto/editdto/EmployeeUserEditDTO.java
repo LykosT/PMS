@@ -1,8 +1,8 @@
 package gr.lykost.pms.dto.editdto;
 
-import gr.lykost.pms.core.enums.EmployeeStatus;
-import gr.lykost.pms.core.enums.SeniorityLevel;
-import gr.lykost.pms.core.enums.SystemRole;
+import gr.lykost.pms.shared.enums.EmployeeStatus;
+import gr.lykost.pms.shared.enums.SeniorityLevel;
+import gr.lykost.pms.shared.enums.SystemRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

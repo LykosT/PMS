@@ -1,4 +1,4 @@
-package gr.lykost.pms.core.exceptions;
+package gr.lykost.pms.shared.exception;
 
 public class AppServerException extends ResourceGenericException {
 

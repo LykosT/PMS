@@ -1,7 +1,7 @@
 package gr.lykost.pms.dto.readonlydto;
 
-import gr.lykost.pms.core.enums.Priority;
-import gr.lykost.pms.core.enums.TaskStatus;
+import gr.lykost.pms.shared.enums.Priority;
+import gr.lykost.pms.shared.enums.TaskStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

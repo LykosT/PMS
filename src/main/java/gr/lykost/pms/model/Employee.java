@@ -1,7 +1,9 @@
 package gr.lykost.pms.model;
 
-import gr.lykost.pms.core.enums.EmployeeStatus;
-import gr.lykost.pms.core.enums.SeniorityLevel;
+import gr.lykost.pms.shared.AbstractEntity;
+
+import gr.lykost.pms.shared.enums.EmployeeStatus;
+import gr.lykost.pms.shared.enums.SeniorityLevel;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;

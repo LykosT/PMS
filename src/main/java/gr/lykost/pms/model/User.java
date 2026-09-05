@@ -1,6 +1,8 @@
 package gr.lykost.pms.model;
 
-import gr.lykost.pms.core.enums.SystemRole;
+import gr.lykost.pms.shared.AbstractEntity;
+
+import gr.lykost.pms.shared.enums.SystemRole;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;

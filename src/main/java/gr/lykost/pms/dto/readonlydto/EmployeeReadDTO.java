@@ -1,8 +1,8 @@
 package gr.lykost.pms.dto.readonlydto;
 
-import gr.lykost.pms.core.enums.EmployeeStatus;
-import gr.lykost.pms.core.enums.SeniorityLevel;
-import gr.lykost.pms.core.enums.SystemRole;
+import gr.lykost.pms.shared.enums.EmployeeStatus;
+import gr.lykost.pms.shared.enums.SeniorityLevel;
+import gr.lykost.pms.shared.enums.SystemRole;
 import lombok.*;
 
 import java.time.LocalDateTime;

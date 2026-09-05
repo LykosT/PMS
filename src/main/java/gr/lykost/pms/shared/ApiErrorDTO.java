@@ -1,4 +1,4 @@
-package gr.lykost.pms.dto.readonlydto;
+package gr.lykost.pms.shared;
 
 import java.util.Map;
 

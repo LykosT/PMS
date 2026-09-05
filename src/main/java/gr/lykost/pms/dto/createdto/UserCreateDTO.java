@@ -1,6 +1,6 @@
 package gr.lykost.pms.dto.createdto;
 
-import gr.lykost.pms.core.enums.SystemRole;
+import gr.lykost.pms.shared.enums.SystemRole;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

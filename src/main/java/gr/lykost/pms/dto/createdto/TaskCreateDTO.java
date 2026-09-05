@@ -1,7 +1,7 @@
 package gr.lykost.pms.dto.createdto;
 
-import gr.lykost.pms.core.enums.Priority;
-import gr.lykost.pms.core.enums.TaskStatus;
+import gr.lykost.pms.shared.enums.Priority;
+import gr.lykost.pms.shared.enums.TaskStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

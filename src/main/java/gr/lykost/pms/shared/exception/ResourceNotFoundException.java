@@ -1,4 +1,4 @@
-package gr.lykost.pms.core.exceptions;
+package gr.lykost.pms.shared.exception;
 
 public class ResourceNotFoundException extends ResourceGenericException {
     private static final String DEFAULT_CODE = "Resource Not Found";

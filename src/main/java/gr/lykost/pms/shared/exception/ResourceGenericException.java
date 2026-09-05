@@ -1,4 +1,4 @@
-package gr.lykost.pms.core.exceptions;
+package gr.lykost.pms.shared.exception;
 
 public class ResourceGenericException extends RuntimeException {
     private final String code;

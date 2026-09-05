@@ -1,4 +1,4 @@
-package gr.lykost.pms.core.enums;
+package gr.lykost.pms.shared.enums;
 
 public enum SystemRole {
     ADMIN,

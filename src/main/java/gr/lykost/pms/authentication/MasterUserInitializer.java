@@ -1,8 +1,8 @@
 package gr.lykost.pms.authentication;
 
-import gr.lykost.pms.core.enums.EmployeeStatus;
-import gr.lykost.pms.core.enums.SeniorityLevel;
-import gr.lykost.pms.core.enums.SystemRole;
+import gr.lykost.pms.shared.enums.EmployeeStatus;
+import gr.lykost.pms.shared.enums.SeniorityLevel;
+import gr.lykost.pms.shared.enums.SystemRole;
 import gr.lykost.pms.dto.createdto.EmployeeUserCreateDTO;
 import gr.lykost.pms.model.Employee;
 import gr.lykost.pms.model.User;

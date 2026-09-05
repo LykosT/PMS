@@ -1,6 +1,6 @@
 package gr.lykost.pms.service;
 
-import gr.lykost.pms.core.exceptions.ResourceNotFoundException;
+import gr.lykost.pms.shared.exception.ResourceNotFoundException;
 import gr.lykost.pms.dto.createdto.TaskCreateDTO;
 import gr.lykost.pms.dto.readonlydto.TaskReadDTO;
 import gr.lykost.pms.model.Employee;

@@ -1,7 +1,9 @@
 package gr.lykost.pms.model;
 
-import gr.lykost.pms.core.enums.Priority;
-import gr.lykost.pms.core.enums.TaskStatus;
+import gr.lykost.pms.shared.AbstractEntity;
+
+import gr.lykost.pms.shared.enums.Priority;
+import gr.lykost.pms.shared.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

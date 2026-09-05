@@ -1,7 +1,7 @@
 package gr.lykost.pms.service;
 
-import gr.lykost.pms.core.exceptions.DuplicateResourceException;
-import gr.lykost.pms.core.exceptions.ResourceNotFoundException;
+import gr.lykost.pms.shared.exception.DuplicateResourceException;
+import gr.lykost.pms.shared.exception.ResourceNotFoundException;
 import gr.lykost.pms.dto.createdto.BusinessRoleCreateDTO;
 import gr.lykost.pms.dto.readonlydto.BusinessRoleReadDTO;
 import gr.lykost.pms.model.BusinessRole;

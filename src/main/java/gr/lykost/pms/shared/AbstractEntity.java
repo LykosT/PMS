@@ -1,4 +1,4 @@
-package gr.lykost.pms.model;
+package gr.lykost.pms.shared;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
