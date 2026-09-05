@@ -96,11 +96,11 @@ class ResourceCrudTest extends AbstractIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.description").value("before"));
 
-        // LIST -> 200 and non-empty
+        // LIST -> 200 and contains the row just created
         mvc.perform(get(resource.path()).session(session))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0].id").isNumber());
+                .andExpect(jsonPath("$[?(@.id == " + id + ")]").exists());
 
         // UPDATE -> 200 with the changed field
         mvc.perform(put(resource.path() + "/" + id).with(csrf()).session(session)

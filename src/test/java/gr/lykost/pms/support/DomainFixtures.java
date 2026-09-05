@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public final class DomainFixtures {
 
@@ -51,6 +52,7 @@ public final class DomainFixtures {
                               String path, String body) throws Exception {
         String response = mvc.perform(post(path).with(csrf()).session(session)
                         .contentType(APPLICATION_JSON).content(body))
+                .andExpect(status().is2xxSuccessful())
                 .andReturn().getResponse().getContentAsString();
         return json.readTree(response).get("id").asLong();
     }
@@ -61,6 +63,7 @@ public final class DomainFixtures {
                         .contentType(APPLICATION_JSON)
                         .content("""
                                 {"username":"admin","password":"admin"}"""))
+                .andExpect(status().isOk())
                 .andReturn();
         return (MockHttpSession) result.getRequest().getSession(false);
     }
