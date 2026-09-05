@@ -1,4 +1,4 @@
-package gr.lykost.pms.model;
+package gr.lykost.pms.businessrole;
 
 import gr.lykost.pms.shared.AbstractEntity;
 

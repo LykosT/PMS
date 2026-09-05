@@ -1,4 +1,4 @@
-package gr.lykost.pms.dto.createdto;
+package gr.lykost.pms.employee.dto;
 
 import gr.lykost.pms.shared.enums.SystemRole;
 import jakarta.validation.constraints.NotBlank;

@@ -1,6 +1,7 @@
 package gr.lykost.pms.model;
 
 import gr.lykost.pms.shared.AbstractEntity;
+import gr.lykost.pms.employee.Employee;
 
 import jakarta.persistence.*;
 import lombok.*;

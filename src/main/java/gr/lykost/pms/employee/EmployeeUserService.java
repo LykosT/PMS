@@ -1,15 +1,15 @@
-package gr.lykost.pms.service;
+package gr.lykost.pms.employee;
 
 import gr.lykost.pms.shared.exception.DuplicateResourceException;
 import gr.lykost.pms.shared.exception.ResourceNotFoundException;
-import gr.lykost.pms.dto.createdto.EmployeeUserCreateDTO;
-import gr.lykost.pms.dto.editdto.EmployeeUserEditDTO;
-import gr.lykost.pms.dto.readonlydto.EmployeeReadDTO;
-import gr.lykost.pms.mapper.EmployeeMapper;
-import gr.lykost.pms.model.Employee;
-import gr.lykost.pms.model.User;
-import gr.lykost.pms.repository.EmployeeRepository;
-import gr.lykost.pms.repository.UserRepository;
+import gr.lykost.pms.employee.dto.EmployeeUserCreateDTO;
+import gr.lykost.pms.employee.dto.EmployeeUserEditDTO;
+import gr.lykost.pms.employee.dto.EmployeeReadDTO;
+import gr.lykost.pms.employee.EmployeeMapper;
+import gr.lykost.pms.employee.Employee;
+import gr.lykost.pms.employee.User;
+import gr.lykost.pms.employee.EmployeeRepository;
+import gr.lykost.pms.employee.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;

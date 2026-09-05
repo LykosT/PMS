@@ -1,7 +1,7 @@
 package gr.lykost.pms.authentication;
 
-import gr.lykost.pms.model.User;
-import gr.lykost.pms.repository.UserRepository;
+import gr.lykost.pms.employee.User;
+import gr.lykost.pms.employee.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

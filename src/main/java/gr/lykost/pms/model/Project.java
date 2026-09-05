@@ -1,6 +1,7 @@
 package gr.lykost.pms.model;
 
 import gr.lykost.pms.shared.AbstractEntity;
+import gr.lykost.pms.employee.Employee;
 
 import gr.lykost.pms.shared.enums.Priority;
 import gr.lykost.pms.shared.enums.ProjectStatus;

@@ -1,9 +1,9 @@
-package gr.lykost.pms.mapper;
+package gr.lykost.pms.employee;
 
-import gr.lykost.pms.dto.createdto.EmployeeUserCreateDTO;
-import gr.lykost.pms.dto.readonlydto.EmployeeReadDTO;
-import gr.lykost.pms.model.Employee;
-import gr.lykost.pms.model.User;
+import gr.lykost.pms.employee.dto.EmployeeUserCreateDTO;
+import gr.lykost.pms.employee.dto.EmployeeReadDTO;
+import gr.lykost.pms.employee.Employee;
+import gr.lykost.pms.employee.User;
 import org.springframework.stereotype.Component;
 
 @Component

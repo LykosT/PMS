@@ -1,4 +1,4 @@
-package gr.lykost.pms.dto.readonlydto;
+package gr.lykost.pms.businessrole.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

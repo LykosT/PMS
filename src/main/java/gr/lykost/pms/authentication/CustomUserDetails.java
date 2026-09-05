@@ -1,7 +1,7 @@
 package gr.lykost.pms.authentication;
 
 import gr.lykost.pms.shared.enums.SystemRole;
-import gr.lykost.pms.model.User;
+import gr.lykost.pms.employee.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

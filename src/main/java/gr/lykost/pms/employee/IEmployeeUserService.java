@@ -1,8 +1,8 @@
-package gr.lykost.pms.service;
+package gr.lykost.pms.employee;
 
-import gr.lykost.pms.dto.createdto.EmployeeUserCreateDTO;
-import gr.lykost.pms.dto.editdto.EmployeeUserEditDTO;
-import gr.lykost.pms.dto.readonlydto.EmployeeReadDTO;
+import gr.lykost.pms.employee.dto.EmployeeUserCreateDTO;
+import gr.lykost.pms.employee.dto.EmployeeUserEditDTO;
+import gr.lykost.pms.employee.dto.EmployeeReadDTO;
 
 import java.util.List;
 

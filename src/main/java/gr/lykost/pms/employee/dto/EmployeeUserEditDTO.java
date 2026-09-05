@@ -1,4 +1,4 @@
-package gr.lykost.pms.dto.editdto;
+package gr.lykost.pms.employee.dto;
 
 import gr.lykost.pms.shared.enums.EmployeeStatus;
 import gr.lykost.pms.shared.enums.SeniorityLevel;

@@ -1,7 +1,7 @@
 package gr.lykost.pms.repository;
 
 import gr.lykost.pms.shared.enums.TaskStatus;
-import gr.lykost.pms.model.Employee;
+import gr.lykost.pms.employee.Employee;
 import gr.lykost.pms.model.Project;
 import gr.lykost.pms.model.Task;
 import gr.lykost.pms.model.Team;

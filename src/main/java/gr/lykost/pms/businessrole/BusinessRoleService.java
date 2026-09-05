@@ -1,11 +1,11 @@
-package gr.lykost.pms.service;
+package gr.lykost.pms.businessrole;
 
 import gr.lykost.pms.shared.exception.DuplicateResourceException;
 import gr.lykost.pms.shared.exception.ResourceNotFoundException;
-import gr.lykost.pms.dto.createdto.BusinessRoleCreateDTO;
-import gr.lykost.pms.dto.readonlydto.BusinessRoleReadDTO;
-import gr.lykost.pms.model.BusinessRole;
-import gr.lykost.pms.repository.BusinessRoleRepository;
+import gr.lykost.pms.businessrole.dto.BusinessRoleCreateDTO;
+import gr.lykost.pms.businessrole.dto.BusinessRoleReadDTO;
+import gr.lykost.pms.businessrole.BusinessRole;
+import gr.lykost.pms.businessrole.BusinessRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

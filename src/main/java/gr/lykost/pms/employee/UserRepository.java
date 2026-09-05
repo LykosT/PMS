@@ -1,6 +1,6 @@
-package gr.lykost.pms.repository;
+package gr.lykost.pms.employee;
 
-import gr.lykost.pms.model.User;
+import gr.lykost.pms.employee.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,8 +1,8 @@
-package gr.lykost.pms.controller;
+package gr.lykost.pms.businessrole;
 
-import gr.lykost.pms.dto.createdto.BusinessRoleCreateDTO;
-import gr.lykost.pms.dto.readonlydto.BusinessRoleReadDTO;
-import gr.lykost.pms.service.BusinessRoleService;
+import gr.lykost.pms.businessrole.dto.BusinessRoleCreateDTO;
+import gr.lykost.pms.businessrole.dto.BusinessRoleReadDTO;
+import gr.lykost.pms.businessrole.BusinessRoleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
