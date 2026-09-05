@@ -55,7 +55,7 @@ class EmployeeApiTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void blankPasswordOnEditKeepsTheExistingPassword() throws Exception {
+    void omittedPasswordOnEditKeepsTheExistingPassword() throws Exception {
         long id = DomainFixtures.create(mvc, session, json, "/api/employees", """
                 {"firstName":"Keep","lastName":"Password",
                  "email":"keep@pms.test","phone":"2100000003",
@@ -63,6 +63,10 @@ class EmployeeApiTest extends AbstractIntegrationTest {
                  "username":"keeper","password":"secret123",
                  "systemRole":"USER","active":true}""");
 
+        // "password" is omitted (-> null), not sent as "". @Size(min = 6) on
+        // EmployeeUserEditDTO.password would reject an empty string with 400;
+        // only a null password reaches the "keep existing password" branch
+        // in EmployeeUserService.updateEmployee.
         mvc.perform(put("/api/employees/" + id).with(csrf()).session(session)
                         .contentType(APPLICATION_JSON).content("""
                                 {"firstName":"Keep","lastName":"Renamed",
