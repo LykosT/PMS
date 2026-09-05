@@ -1,10 +1,9 @@
 package gr.lykost.pms;
 
+import gr.lykost.pms.support.AbstractIntegrationTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class PmsApplicationTests {
+class PmsApplicationTests extends AbstractIntegrationTest {
 
     @Test
     void contextLoads() {

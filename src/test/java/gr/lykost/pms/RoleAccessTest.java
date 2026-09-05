@@ -53,10 +53,10 @@ class RoleAccessTest extends AbstractIntegrationTest {
     );
 
     private static final Map<String, String> UPDATE_TEMPLATES = Map.of(
-            // employees/1 is handled separately in bodyFor(): id 1 is the seeded master
-            // admin (MasterUserInitializer) shared by every test class in the JVM-lifetime
-            // container, so its update body must be idempotent rather than templated.
-            "employees", "",
+            "employees", """
+                    {"firstName":"Matrix","lastName":"Employee Updated","email":"matrix-updated-%N%@pms.test",
+                     "phone":"2100000000","seniorityLevel":"JUNIOR","employeeStatus":"ACTIVE",
+                     "username":"matrix-updated-%N%","systemRole":"USER","active":true}""",
             "business-roles", """
                     {"name":"Matrix Role Updated %N%","description":"after"}""",
             "departments", """
@@ -74,33 +74,24 @@ class RoleAccessTest extends AbstractIntegrationTest {
                      "projectId":%PROJ%,"teamId":%TEAM%,"assigneeId":%EMP%}"""
     );
 
-    private static final String EMPLOYEE_1_IDEMPOTENT_UPDATE = """
-            {"firstName":"System","lastName":"Administrator","email":"admin@admin.admin",
-             "seniorityLevel":"MANAGER","employeeStatus":"ACTIVE",
-             "username":"admin","systemRole":"ADMIN","active":true}""";
+    // A path segment guaranteed not to exist for any resource, used for every GET-by-id,
+    // PUT and DELETE matrix case. @PreAuthorize is evaluated before the service ever looks
+    // the row up, so a denied role still gets 403 whether or not the row exists, and an
+    // allowed role gets 404 instead of 200/204 - which the "not 403" assertion tolerates.
+    // This means no matrix case ever touches a real row (in particular, it never mutates
+    // or deletes the seeded master admin employee, id 1 - see MasterUserInitializer), so
+    // per-case fixture setup below needs no memoization or idempotent special-casing.
+    private static final String MISSING_ID = "999999999";
 
     private static final AtomicInteger SEQ = new AtomicInteger(1);
 
-    // Static + guarded rather than a fresh login/seed per case: the matrix itself sends a
-    // real DELETE /api/employees/1 as ADMIN, which genuinely deletes the seeded master
-    // admin row (id 1, see MasterUserInitializer) once that case runs. A per-case
-    // re-login as "admin"/"admin" would then fail for every case after it. Logging in
-    // once and reusing the MockHttpSession works because HttpSessionSecurityContextRepository
-    // caches the resolved Authentication in the session and does not re-verify against the
-    // database on every request, so the cached session stays usable even after the
-    // backing row is gone. Ids are seeded once too and reused as FK references in every
-    // POST/PUT body; that is safe under the "403 vs not-403" assertion even if a later
-    // matrix DELETE case removes the referenced row, since an allowed role may legitimately
-    // see 400/404 downstream of authorization.
-    private static MockHttpSession adminSession;
-    private static DomainFixtures.Ids ids;
+    private MockHttpSession adminSession;
+    private DomainFixtures.Ids ids;
 
     @BeforeEach
-    void seedFixturesOnce() throws Exception {
-        if (adminSession == null) {
-            adminSession = DomainFixtures.adminSession(mvc);
-            ids = DomainFixtures.seed(mvc, adminSession, json);
-        }
+    void seedFixtures() throws Exception {
+        adminSession = DomainFixtures.adminSession(mvc);
+        ids = DomainFixtures.seed(mvc, adminSession, json);
     }
 
     private static String resourceOf(String path) {
@@ -111,9 +102,6 @@ class RoleAccessTest extends AbstractIntegrationTest {
     /** Builds a valid request body for the given resource/method so the request reaches
      *  the @PreAuthorize check instead of failing validation beforehand. */
     private String bodyFor(String resource, String method) {
-        if ("employees".equals(resource) && "PUT".equals(method)) {
-            return EMPLOYEE_1_IDEMPOTENT_UPDATE;
-        }
         String template = ("POST".equals(method) ? CREATE_TEMPLATES : UPDATE_TEMPLATES).get(resource);
         return template
                 .replace("%N%", String.valueOf(SEQ.getAndIncrement()))
@@ -136,21 +124,21 @@ class RoleAccessTest extends AbstractIntegrationTest {
                 new Case("GET", r, "MANAGER", false),
                 new Case("GET", r, "USER", false),
                 // get by id: USER denied
-                new Case("GET", r + "/1", "ADMIN", false),
-                new Case("GET", r + "/1", "MANAGER", false),
-                new Case("GET", r + "/1", "USER", true),
+                new Case("GET", r + "/" + MISSING_ID, "ADMIN", false),
+                new Case("GET", r + "/" + MISSING_ID, "MANAGER", false),
+                new Case("GET", r + "/" + MISSING_ID, "USER", true),
                 // create: USER denied
                 new Case("POST", r, "ADMIN", false),
                 new Case("POST", r, "MANAGER", false),
                 new Case("POST", r, "USER", true),
                 // update: USER denied
-                new Case("PUT", r + "/1", "ADMIN", false),
-                new Case("PUT", r + "/1", "MANAGER", false),
-                new Case("PUT", r + "/1", "USER", true),
+                new Case("PUT", r + "/" + MISSING_ID, "ADMIN", false),
+                new Case("PUT", r + "/" + MISSING_ID, "MANAGER", false),
+                new Case("PUT", r + "/" + MISSING_ID, "USER", true),
                 // delete: ADMIN only
-                new Case("DELETE", r + "/1", "ADMIN", false),
-                new Case("DELETE", r + "/1", "MANAGER", true),
-                new Case("DELETE", r + "/1", "USER", true)
+                new Case("DELETE", r + "/" + MISSING_ID, "ADMIN", false),
+                new Case("DELETE", r + "/" + MISSING_ID, "MANAGER", true),
+                new Case("DELETE", r + "/" + MISSING_ID, "USER", true)
         ));
     }
 
