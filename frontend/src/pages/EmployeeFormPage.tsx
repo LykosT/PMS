@@ -3,12 +3,15 @@ import type { FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { createEmployee, getEmployee, updateEmployee } from '../api/employees'
 import { extractApiError } from '../api/client'
+import { listResource } from '../api/resources'
+import type { Row } from '../api/resources'
+import MultiSelect from '../components/MultiSelect'
 import {
   EMPLOYEE_STATUSES,
   SENIORITY_LEVELS,
   SYSTEM_ROLES,
 } from '../types'
-import type { EmployeeStatus, SeniorityLevel, SystemRole } from '../types'
+import type { EmployeeStatus, NamedRef, SeniorityLevel, SystemRole } from '../types'
 
 interface FormState {
   firstName: string
@@ -21,6 +24,9 @@ interface FormState {
   password: string
   systemRole: SystemRole
   active: boolean
+  departmentId: number | null
+  teamIds: number[]
+  businessRoleIds: number[]
 }
 
 const emptyForm: FormState = {
@@ -34,7 +40,14 @@ const emptyForm: FormState = {
   password: '',
   systemRole: 'USER',
   active: true,
+  departmentId: null,
+  teamIds: [],
+  businessRoleIds: [],
 }
+
+/** listResource returns loosely-typed rows; departments/teams/business-roles all carry `id` + `name`. */
+const toNamedRefs = (rows: Row[]): NamedRef[] =>
+  rows.map((row) => ({ id: row.id, name: String(row.name ?? '') }))
 
 const inputClass =
   'w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none'
@@ -51,6 +64,26 @@ export default function EmployeeFormPage() {
   const [loading, setLoading] = useState(isEdit)
   const [submitting, setSubmitting] = useState(false)
 
+  const [departments, setDepartments] = useState<NamedRef[]>([])
+  const [teams, setTeams] = useState<NamedRef[]>([])
+  const [roles, setRoles] = useState<NamedRef[]>([])
+
+  useEffect(() => {
+    Promise.all([
+      listResource('departments'),
+      listResource('teams'),
+      listResource('business-roles'),
+    ])
+      .then(([d, t, r]) => {
+        setDepartments(toNamedRefs(d))
+        setTeams(toNamedRefs(t))
+        setRoles(toNamedRefs(r))
+      })
+      .catch(() => {
+        /* option lists stay empty; the form still saves without relations */
+      })
+  }, [])
+
   useEffect(() => {
     if (!isEdit) return
     getEmployee(Number(id))
@@ -66,6 +99,9 @@ export default function EmployeeFormPage() {
           password: '',
           systemRole: employee.systemRole ?? 'USER',
           active: employee.userActive ?? true,
+          departmentId: employee.departmentId,
+          teamIds: employee.teams.map((t) => t.id),
+          businessRoleIds: employee.businessRoles.map((r) => r.id),
         }),
       )
       .catch((err) => setError(extractApiError(err).message))
@@ -199,6 +235,45 @@ export default function EmployeeFormPage() {
               </select>
               {fieldError('employeeStatus')}
             </div>
+          </div>
+        </section>
+
+        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-slate-500">
+            Department &amp; Memberships
+          </h2>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label htmlFor="departmentId" className={labelClass}>Department</label>
+              <select
+                id="departmentId"
+                value={form.departmentId ?? ''}
+                onChange={(e) =>
+                  set('departmentId', e.target.value ? Number(e.target.value) : null)
+                }
+                className={inputClass}
+              >
+                <option value="">— none —</option>
+                {departments.map((d) => (
+                  <option key={d.id} value={d.id}>{d.name}</option>
+                ))}
+              </select>
+              {fieldError('departmentId')}
+            </div>
+          </div>
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <MultiSelect
+              label="Teams"
+              options={teams}
+              selected={form.teamIds}
+              onChange={(teamIds) => set('teamIds', teamIds)}
+            />
+            <MultiSelect
+              label="Business roles"
+              options={roles}
+              selected={form.businessRoleIds}
+              onChange={(businessRoleIds) => set('businessRoleIds', businessRoleIds)}
+            />
           </div>
         </section>
 
