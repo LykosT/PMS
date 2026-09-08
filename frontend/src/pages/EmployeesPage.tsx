@@ -70,6 +70,7 @@ export default function EmployeesPage() {
               <th className="px-4 py-3">Phone</th>
               <th className="px-4 py-3">Seniority</th>
               <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3">Department</th>
               <th className="px-4 py-3">Username</th>
               <th className="px-4 py-3">Role</th>
               {(canEdit || canDelete) && <th className="px-4 py-3 text-right">Actions</th>}
@@ -78,13 +79,13 @@ export default function EmployeesPage() {
           <tbody className="divide-y divide-slate-100">
             {loading ? (
               <tr>
-                <td colSpan={8} className="px-4 py-8 text-center text-slate-400">
+                <td colSpan={9} className="px-4 py-8 text-center text-slate-400">
                   Loading…
                 </td>
               </tr>
             ) : employees.length === 0 ? (
               <tr>
-                <td colSpan={8} className="px-4 py-8 text-center text-slate-400">
+                <td colSpan={9} className="px-4 py-8 text-center text-slate-400">
                   No employees found.
                 </td>
               </tr>
@@ -106,6 +107,7 @@ export default function EmployeesPage() {
                       {employee.employeeStatus}
                     </span>
                   </td>
+                  <td className="px-4 py-3 text-slate-600">{employee.departmentName ?? '—'}</td>
                   <td className="px-4 py-3 text-slate-600">{employee.username ?? '—'}</td>
                   <td className="px-4 py-3 text-slate-600">{employee.systemRole ?? '—'}</td>
                   {(canEdit || canDelete) && (
