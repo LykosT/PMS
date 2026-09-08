@@ -4,8 +4,6 @@ import gr.lykost.pms.shared.exception.DuplicateResourceException;
 import gr.lykost.pms.shared.exception.ResourceNotFoundException;
 import gr.lykost.pms.businessrole.dto.BusinessRoleCreateDTO;
 import gr.lykost.pms.businessrole.dto.BusinessRoleReadDTO;
-import gr.lykost.pms.businessrole.BusinessRole;
-import gr.lykost.pms.businessrole.BusinessRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +15,7 @@ import java.util.List;
 public class BusinessRoleService {
 
     private final BusinessRoleRepository businessRoleRepository;
+    private final BusinessRoleAssignmentPort businessRoleAssignmentPort;
 
     @Transactional(readOnly = true)
     public List<BusinessRoleReadDTO> findAll() {
@@ -58,7 +57,9 @@ public class BusinessRoleService {
 
     @Transactional
     public void delete(Long id) {
-        businessRoleRepository.delete(getOrThrow(id));
+        BusinessRole role = getOrThrow(id);
+        businessRoleAssignmentPort.unassignFromAllEmployees(id);
+        businessRoleRepository.delete(role);
         businessRoleRepository.flush();
     }
 

@@ -27,7 +27,9 @@ public class BusinessRole extends AbstractEntity {
     @Column
     private String description;
 
-    // Re-enable together with Employee.businessRoles (owning side, currently commented out)
+    // Employee.businessRoles (the owning side) is live. This inverse side stays
+    // commented out because enabling it would make businessrole depend on
+    // employee, and employee already depends on businessrole -> module cycle.
 //    @ManyToMany(mappedBy = "businessRoles", fetch = FetchType.LAZY)
 //    @Builder.Default
 //    private Set<Employee> employees = new HashSet<>();

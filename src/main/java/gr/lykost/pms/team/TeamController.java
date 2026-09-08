@@ -2,7 +2,6 @@ package gr.lykost.pms.team;
 
 import gr.lykost.pms.team.dto.TeamCreateDTO;
 import gr.lykost.pms.team.dto.TeamReadDTO;
-import gr.lykost.pms.team.TeamService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

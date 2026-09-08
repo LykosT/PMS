@@ -1,7 +1,6 @@
 package gr.lykost.pms.employee;
 
 import gr.lykost.pms.employee.dto.EmployeeUserCreateDTO;
-import gr.lykost.pms.employee.User;
 import org.springframework.stereotype.Component;
 
 @Component

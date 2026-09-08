@@ -2,7 +2,6 @@ package gr.lykost.pms.task;
 
 import gr.lykost.pms.task.dto.TaskCreateDTO;
 import gr.lykost.pms.task.dto.TaskReadDTO;
-import gr.lykost.pms.task.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

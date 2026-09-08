@@ -7,11 +7,6 @@ import gr.lykost.pms.shared.exception.ResourceNotFoundException;
 import gr.lykost.pms.employee.dto.EmployeeUserCreateDTO;
 import gr.lykost.pms.employee.dto.EmployeeUserEditDTO;
 import gr.lykost.pms.employee.dto.EmployeeReadDTO;
-import gr.lykost.pms.employee.EmployeeMapper;
-import gr.lykost.pms.employee.Employee;
-import gr.lykost.pms.employee.User;
-import gr.lykost.pms.employee.EmployeeRepository;
-import gr.lykost.pms.employee.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -105,6 +100,8 @@ public class EmployeeUserService implements IEmployeeUserService {
     public void deleteEmployee(Long id) {
 
         Employee employee = getEmployeeOrThrow(id);
+
+        teamMembershipPort.assign(id, Set.of());
 
         if (employee.getUser() != null) {
             userRepository.delete(employee.getUser());

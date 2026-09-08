@@ -2,9 +2,6 @@ package gr.lykost.pms.employee;
 
 import gr.lykost.pms.employee.dto.EmployeeUserCreateDTO;
 import gr.lykost.pms.employee.dto.EmployeeReadDTO;
-import gr.lykost.pms.employee.Employee;
-import gr.lykost.pms.employee.NamedRef;
-import gr.lykost.pms.employee.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

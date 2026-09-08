@@ -1,6 +1,5 @@
 package gr.lykost.pms.businessrole;
 
-import gr.lykost.pms.businessrole.BusinessRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

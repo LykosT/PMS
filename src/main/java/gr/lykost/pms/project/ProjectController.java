@@ -2,7 +2,6 @@ package gr.lykost.pms.project;
 
 import gr.lykost.pms.project.dto.ProjectCreateDTO;
 import gr.lykost.pms.project.dto.ProjectReadDTO;
-import gr.lykost.pms.project.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

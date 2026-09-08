@@ -2,7 +2,6 @@ package gr.lykost.pms.department;
 
 import gr.lykost.pms.department.dto.DepartmentCreateDTO;
 import gr.lykost.pms.department.dto.DepartmentReadDTO;
-import gr.lykost.pms.department.DepartmentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

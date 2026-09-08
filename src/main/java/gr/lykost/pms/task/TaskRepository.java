@@ -3,7 +3,6 @@ package gr.lykost.pms.task;
 import gr.lykost.pms.shared.enums.TaskStatus;
 import gr.lykost.pms.employee.Employee;
 import gr.lykost.pms.project.Project;
-import gr.lykost.pms.task.Task;
 import gr.lykost.pms.team.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

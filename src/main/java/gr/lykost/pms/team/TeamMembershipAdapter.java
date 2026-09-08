@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,9 +27,7 @@ class TeamMembershipAdapter implements TeamMembershipPort {
         if (employeeId == null) {
             return new HashSet<>();
         }
-        return teamRepository.findAll().stream()
-                .filter(t -> t.getEmployees().stream()
-                        .anyMatch(e -> e.getId().equals(employeeId)))
+        return teamRepository.findByEmployees_Id(employeeId).stream()
                 .map(t -> new NamedRef(t.getId(), t.getName()))
                 .collect(Collectors.toSet());
     }
@@ -38,8 +37,10 @@ class TeamMembershipAdapter implements TeamMembershipPort {
     public void assign(Long employeeId, Set<Long> teamIds) {
         Set<Long> wanted = teamIds == null ? new HashSet<>() : teamIds;
 
+        List<Team> wantedTeams = teamRepository.findAllById(wanted);
+        Set<Long> foundIds = wantedTeams.stream().map(Team::getId).collect(Collectors.toSet());
         for (Long teamId : wanted) {
-            if (!teamRepository.existsById(teamId)) {
+            if (!foundIds.contains(teamId)) {
                 throw new ResourceNotFoundException("Team", "Team not found with ID: " + teamId);
             }
         }
@@ -48,16 +49,19 @@ class TeamMembershipAdapter implements TeamMembershipPort {
                 .orElseThrow(() -> new ResourceNotFoundException("Employee",
                         "Employee not found with ID: " + employeeId));
 
-        for (Team team : teamRepository.findAll()) {
-            boolean shouldBeMember = wanted.contains(team.getId());
-            boolean isMember = team.getEmployees().stream()
-                    .anyMatch(e -> e.getId().equals(employeeId));
+        List<Team> currentTeams = teamRepository.findByEmployees_Id(employeeId);
+        Set<Long> currentIds = currentTeams.stream().map(Team::getId).collect(Collectors.toSet());
 
-            if (shouldBeMember && !isMember) {
-                team.getEmployees().add(employee);
-                teamRepository.save(team);
-            } else if (!shouldBeMember && isMember) {
+        for (Team team : currentTeams) {
+            if (!wanted.contains(team.getId())) {
                 team.getEmployees().removeIf(e -> e.getId().equals(employeeId));
+                teamRepository.save(team);
+            }
+        }
+
+        for (Team team : wantedTeams) {
+            if (!currentIds.contains(team.getId())) {
+                team.getEmployees().add(employee);
                 teamRepository.save(team);
             }
         }

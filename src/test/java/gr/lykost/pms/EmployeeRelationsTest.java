@@ -8,6 +8,8 @@ import org.springframework.mock.web.MockHttpSession;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -268,5 +270,110 @@ class EmployeeRelationsTest extends AbstractIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.teams.length()").value(1))
                 .andExpect(jsonPath("$.teams[0].id").value((int) a.teamId()));
+    }
+
+    @Test
+    void editOmittingDepartmentIdClearsDepartment() throws Exception {
+        var ids = DomainFixtures.seed(mvc, session, json);
+
+        String createResponse = mvc.perform(post("/api/employees").with(csrf()).session(session)
+                        .contentType(APPLICATION_JSON).content("""
+                                {"firstName":"Has","lastName":"Department",
+                                 "email":"hasdept@pms.test","phone":"2100001012",
+                                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                                 "username":"hasdept","password":"secret123",
+                                 "systemRole":"USER","active":true,
+                                 "departmentId":%d}""".formatted(ids.departmentId())))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.departmentId").value((int) ids.departmentId()))
+                .andReturn().getResponse().getContentAsString();
+        long employeeId = json.readTree(createResponse).get("id").asLong();
+
+        // departmentId omitted on edit -> a scalar field, so this unconditionally
+        // clears it (unlike businessRoleIds/teamIds, where omission means "leave
+        // unchanged"). This is deliberate (a plain Long can't tell omitted from null).
+        mvc.perform(put("/api/employees/{id}", employeeId).with(csrf()).session(session)
+                        .contentType(APPLICATION_JSON).content("""
+                                {"firstName":"Has","lastName":"Department",
+                                 "email":"hasdept@pms.test","phone":"2100001012",
+                                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                                 "username":"hasdept",
+                                 "systemRole":"USER","active":true}"""))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.departmentId").doesNotExist())
+                .andExpect(jsonPath("$.departmentName").doesNotExist());
+    }
+
+    @Test
+    void editWithEmptyTeamIdsClearsExistingTeams() throws Exception {
+        var a = DomainFixtures.seed(mvc, session, json);
+
+        long employeeId = DomainFixtures.create(mvc, session, json, "/api/employees", """
+                {"firstName":"Clear","lastName":"Teams",
+                 "email":"clearteams@pms.test","phone":"2100001013",
+                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                 "username":"clearteams","password":"secret123",
+                 "systemRole":"USER","active":true,
+                 "teamIds":[%d]}""".formatted(a.teamId()));
+
+        mvc.perform(put("/api/employees/{id}", employeeId).with(csrf()).session(session)
+                        .contentType(APPLICATION_JSON).content("""
+                                {"firstName":"Clear","lastName":"Teams",
+                                 "email":"clearteams@pms.test","phone":"2100001013",
+                                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                                 "username":"clearteams",
+                                 "systemRole":"USER","active":true,
+                                 "teamIds":[]}"""))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.teams").isArray())
+                .andExpect(jsonPath("$.teams").isEmpty());
+    }
+
+    @Test
+    void deletingEmployeeWithTeamMembershipsSucceeds() throws Exception {
+        // Regression test for C1: deleting an employee who belongs to a team
+        // used to fail with 409 because nothing cleared the employee_team
+        // join rows (Team owns that join table, not Employee) before the
+        // employee row was deleted.
+        var a = DomainFixtures.seed(mvc, session, json);
+        var b = DomainFixtures.seed(mvc, session, json);
+
+        long employeeId = DomainFixtures.create(mvc, session, json, "/api/employees", """
+                {"firstName":"OnTeams","lastName":"ToDelete",
+                 "email":"onteamstodelete@pms.test","phone":"2100001014",
+                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                 "username":"onteamstodelete","password":"secret123",
+                 "systemRole":"USER","active":true,
+                 "teamIds":[%d,%d]}""".formatted(a.teamId(), b.teamId()));
+
+        mvc.perform(delete("/api/employees/{id}", employeeId).with(csrf()).session(session))
+                .andExpect(status().isNoContent());
+
+        mvc.perform(get("/api/employees/{id}", employeeId).session(session))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void deletingBusinessRoleAssignedToEmployeeSucceeds() throws Exception {
+        // Regression test for C2: deleting a business role held by an
+        // employee used to fail with 409 because nothing cleared the
+        // employee_businessrole join rows (Employee owns that join table)
+        // before the role row was deleted.
+        long roleId = DomainFixtures.create(mvc, session, json, "/api/business-roles", """
+                {"name":"Deletable Assigned Role","description":"d"}""");
+
+        DomainFixtures.create(mvc, session, json, "/api/employees", """
+                {"firstName":"Assigned","lastName":"RoleHolder",
+                 "email":"roleholder@pms.test","phone":"2100001015",
+                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                 "username":"roleholder","password":"secret123",
+                 "systemRole":"USER","active":true,
+                 "businessRoleIds":[%d]}""".formatted(roleId));
+
+        mvc.perform(delete("/api/business-roles/{id}", roleId).with(csrf()).session(session))
+                .andExpect(status().isNoContent());
+
+        mvc.perform(get("/api/business-roles/{id}", roleId).session(session))
+                .andExpect(status().isNotFound());
     }
 }

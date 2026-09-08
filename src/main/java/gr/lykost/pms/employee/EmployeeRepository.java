@@ -1,7 +1,6 @@
 package gr.lykost.pms.employee;
 
 //import gr.lykost.pms.department.Department;
-import gr.lykost.pms.employee.Employee;
 //import gr.lykost.pms.team.Team;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,6 +20,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     Optional<Employee> findByUuid(String uuid);
 
     Optional<Employee> findByEmail(String email);
+
+    List<Employee> findByBusinessRoles_Id(Long businessRoleId);
 
 //    List<Employee> findByDepartment(Department department);
 

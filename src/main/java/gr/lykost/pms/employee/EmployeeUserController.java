@@ -3,7 +3,6 @@ package gr.lykost.pms.employee;
 import gr.lykost.pms.employee.dto.EmployeeUserCreateDTO;
 import gr.lykost.pms.employee.dto.EmployeeUserEditDTO;
 import gr.lykost.pms.employee.dto.EmployeeReadDTO;
-import gr.lykost.pms.employee.IEmployeeUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
