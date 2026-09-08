@@ -30,8 +30,8 @@ public class EmployeeReadDTO {
     private SystemRole systemRole;
     private Boolean userActive;
 
-//    private Long departmentId;
-//    private String departmentName;
+    private Long departmentId;
+    private String departmentName;
 //    private Long teamId;
 //    private String teamName;
     private Set<NamedRef> businessRoles = new HashSet<>();

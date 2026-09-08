@@ -54,10 +54,10 @@ public class Employee extends AbstractEntity {
     @OneToOne(mappedBy = "employee", fetch = FetchType.EAGER)
     private User user;
 
-//    // Employee -> Department (N:1)
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "department_id", nullable = false)
-//    private Department department;
+    // Employee -> Department, by id only (via DepartmentPort) to avoid a
+    // department -> employee -> department module cycle.
+    @Column(name = "department_id")
+    private Long departmentId;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

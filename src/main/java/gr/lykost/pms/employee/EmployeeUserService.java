@@ -32,6 +32,7 @@ public class EmployeeUserService implements IEmployeeUserService {
     private final BusinessRoleRepository businessRoleRepository;
     private final EmployeeMapper employeeMapper;
     private final PasswordEncoder passwordEncoder;
+    private final DepartmentPort departmentPort;
 
     private Set<BusinessRole> resolveBusinessRoles(Set<Long> ids) {
         if (ids == null || ids.isEmpty()) {
@@ -42,6 +43,16 @@ public class EmployeeUserService implements IEmployeeUserService {
                         .orElseThrow(() -> new ResourceNotFoundException("BusinessRole",
                                 "Business role not found with ID: " + id)))
                 .collect(java.util.stream.Collectors.toSet());
+    }
+
+    private Long resolveDepartmentId(Long departmentId) {
+        if (departmentId == null) {
+            return null;
+        }
+        departmentPort.byId(departmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Department",
+                        "Department not found with ID: " + departmentId));
+        return departmentId;
     }
 
     @Override
@@ -59,6 +70,7 @@ public class EmployeeUserService implements IEmployeeUserService {
 
         Employee employee = employeeMapper.mapToEmployee(dto);
         employee.setBusinessRoles(resolveBusinessRoles(dto.getBusinessRoleIds()));
+        employee.setDepartmentId(resolveDepartmentId(dto.getDepartmentId()));
         Employee savedEmployee = employeeRepository.save(employee);
         log.info("Employee created with ID: {}", savedEmployee.getId());
 
@@ -127,6 +139,7 @@ public class EmployeeUserService implements IEmployeeUserService {
         if (dto.getBusinessRoleIds() != null) {
             employee.setBusinessRoles(resolveBusinessRoles(dto.getBusinessRoleIds()));
         }
+        employee.setDepartmentId(resolveDepartmentId(dto.getDepartmentId()));
 
         User user = employee.getUser();
         if (user != null) {

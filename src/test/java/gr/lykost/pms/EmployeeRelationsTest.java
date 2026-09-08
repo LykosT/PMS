@@ -125,4 +125,48 @@ class EmployeeRelationsTest extends AbstractIntegrationTest {
                 .andExpect(jsonPath("$.businessRoles").isArray())
                 .andExpect(jsonPath("$.businessRoles").isEmpty());
     }
+
+    @Test
+    void createWithDepartmentReturnsIdAndName() throws Exception {
+        var ids = DomainFixtures.seed(mvc, session, json);
+
+        mvc.perform(post("/api/employees").with(csrf()).session(session)
+                        .contentType(APPLICATION_JSON).content("""
+                                {"firstName":"Dep","lastName":"Member",
+                                 "email":"depmember@pms.test","phone":"2100001004",
+                                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                                 "username":"depmember","password":"secret123",
+                                 "systemRole":"USER","active":true,
+                                 "departmentId":%d}""".formatted(ids.departmentId())))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.departmentId").value((int) ids.departmentId()))
+                .andExpect(jsonPath("$.departmentName").isNotEmpty());
+    }
+
+    @Test
+    void createWithoutDepartmentLeavesItNull() throws Exception {
+        mvc.perform(post("/api/employees").with(csrf()).session(session)
+                        .contentType(APPLICATION_JSON).content("""
+                                {"firstName":"No","lastName":"Department",
+                                 "email":"nodept@pms.test","phone":"2100001005",
+                                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                                 "username":"nodept","password":"secret123",
+                                 "systemRole":"USER","active":true}"""))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.departmentId").doesNotExist())
+                .andExpect(jsonPath("$.departmentName").doesNotExist());
+    }
+
+    @Test
+    void createWithUnknownDepartmentReturns404() throws Exception {
+        mvc.perform(post("/api/employees").with(csrf()).session(session)
+                        .contentType(APPLICATION_JSON).content("""
+                                {"firstName":"Bad","lastName":"Department",
+                                 "email":"baddept@pms.test","phone":"2100001006",
+                                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                                 "username":"baddept","password":"secret123",
+                                 "systemRole":"USER","active":true,
+                                 "departmentId":99999999}"""))
+                .andExpect(status().isNotFound());
+    }
 }

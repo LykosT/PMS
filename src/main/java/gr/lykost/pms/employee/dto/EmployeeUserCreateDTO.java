@@ -50,4 +50,7 @@ public class EmployeeUserCreateDTO {
     // null and empty behave identically on create (both yield no roles); kept null for
     // symmetry with EmployeeUserEditDTO, where null vs. empty is meaningful.
     private Set<Long> businessRoleIds = null;
+
+    // Optional: no department assignment when omitted.
+    private Long departmentId;
 }

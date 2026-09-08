@@ -3,11 +3,16 @@ package gr.lykost.pms.employee;
 import gr.lykost.pms.employee.dto.EmployeeUserCreateDTO;
 import gr.lykost.pms.employee.dto.EmployeeReadDTO;
 import gr.lykost.pms.employee.Employee;
+import gr.lykost.pms.employee.NamedRef;
 import gr.lykost.pms.employee.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class EmployeeMapper {
+
+    private final DepartmentPort departmentPort;
 
     public Employee mapToEmployee(EmployeeUserCreateDTO dto) {
         return Employee.builder()
@@ -34,6 +39,8 @@ public class EmployeeMapper {
                 user != null ? user.getUsername() : null,
                 user != null ? user.getSystemRole() : null,
                 user != null ? user.isActive() : null,
+                employee.getDepartmentId(),
+                departmentPort.byId(employee.getDepartmentId()).map(NamedRef::name).orElse(null),
                 employee.getBusinessRoles().stream()
                         .map(r -> new NamedRef(r.getId(), r.getName()))
                         .collect(java.util.stream.Collectors.toSet()),

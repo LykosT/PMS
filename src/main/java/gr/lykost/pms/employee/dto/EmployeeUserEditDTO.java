@@ -54,4 +54,8 @@ public class EmployeeUserEditDTO {
 
     // null = leave business-role membership unchanged; empty set = clear all roles
     private Set<Long> businessRoleIds = null;
+
+    // Assigned unconditionally on edit, same as every other scalar field here
+    // (e.g. phone); omitting it clears the department.
+    private Long departmentId;
 }
