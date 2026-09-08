@@ -53,4 +53,8 @@ public class EmployeeUserCreateDTO {
 
     // Optional: no department assignment when omitted.
     private Long departmentId;
+
+    // null and empty behave identically on create (both yield no team memberships);
+    // kept null for symmetry with EmployeeUserEditDTO, where null vs. empty is meaningful.
+    private Set<Long> teamIds = null;
 }

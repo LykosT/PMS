@@ -33,6 +33,7 @@ public class EmployeeUserService implements IEmployeeUserService {
     private final EmployeeMapper employeeMapper;
     private final PasswordEncoder passwordEncoder;
     private final DepartmentPort departmentPort;
+    private final TeamMembershipPort teamMembershipPort;
 
     private Set<BusinessRole> resolveBusinessRoles(Set<Long> ids) {
         if (ids == null || ids.isEmpty()) {
@@ -73,6 +74,8 @@ public class EmployeeUserService implements IEmployeeUserService {
         employee.setDepartmentId(resolveDepartmentId(dto.getDepartmentId()));
         Employee savedEmployee = employeeRepository.save(employee);
         log.info("Employee created with ID: {}", savedEmployee.getId());
+
+        teamMembershipPort.assign(savedEmployee.getId(), dto.getTeamIds());
 
         User user = new User();
         user.setUsername(dto.getUsername());
@@ -158,6 +161,9 @@ public class EmployeeUserService implements IEmployeeUserService {
                 user.setPassword(passwordEncoder.encode(dto.getPassword()));
             }
             userRepository.save(user);
+        }
+        if (dto.getTeamIds() != null) {
+            teamMembershipPort.assign(employee.getId(), dto.getTeamIds());
         }
         return employeeMapper.mapToEmployeeReadDTO(employeeRepository.save(employee));
     }

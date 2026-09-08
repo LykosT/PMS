@@ -58,4 +58,7 @@ public class EmployeeUserEditDTO {
     // Assigned unconditionally on edit, same as every other scalar field here
     // (e.g. phone); omitting it clears the department.
     private Long departmentId;
+
+    // null = leave team membership unchanged; empty set = clear all teams
+    private Set<Long> teamIds = null;
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class EmployeeMapper {
 
     private final DepartmentPort departmentPort;
+    private final TeamMembershipPort teamMembershipPort;
 
     public Employee mapToEmployee(EmployeeUserCreateDTO dto) {
         return Employee.builder()
@@ -44,6 +45,7 @@ public class EmployeeMapper {
                 employee.getBusinessRoles().stream()
                         .map(r -> new NamedRef(r.getId(), r.getName()))
                         .collect(java.util.stream.Collectors.toSet()),
+                teamMembershipPort.teamsOf(employee.getId()),
                 employee.getCreatedAt(),
                 employee.getUpdatedAt()
         );

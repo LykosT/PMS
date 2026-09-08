@@ -7,6 +7,8 @@ import gr.lykost.pms.project.Project;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -43,11 +45,17 @@ public class Team extends AbstractEntity {
     @JoinColumn(name = "lead_id")
     private Employee lead;
 
-    // Team -> Employees (1:N)
-    // Re-enable together with Employee.team (owning side, currently commented out)
-//    @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
-//    @Builder.Default
-//    private Set<Employee> employees = new HashSet<>();
+    // Team <-> Employees (M:N), owned here so Employee needs no import of
+    // the team module (which would create a module cycle, since team
+    // already depends on employee). See employee.TeamMembershipPort.
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "employee_team",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id")
+    )
+    @Builder.Default
+    private Set<Employee> employees = new HashSet<>();
 
     // Team -> Tasks (1:N)
     // Commented out to avoid a module cycle (team would depend on task,

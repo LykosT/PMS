@@ -32,9 +32,8 @@ public class EmployeeReadDTO {
 
     private Long departmentId;
     private String departmentName;
-//    private Long teamId;
-//    private String teamName;
     private Set<NamedRef> businessRoles = new HashSet<>();
+    private Set<NamedRef> teams = new HashSet<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

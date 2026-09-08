@@ -169,4 +169,104 @@ class EmployeeRelationsTest extends AbstractIntegrationTest {
                                  "departmentId":99999999}"""))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    void createWithTeamsReturnsThem() throws Exception {
+        var ids = DomainFixtures.seed(mvc, session, json);
+
+        mvc.perform(post("/api/employees").with(csrf()).session(session)
+                        .contentType(APPLICATION_JSON).content("""
+                                {"firstName":"Team","lastName":"Member",
+                                 "email":"teammember@pms.test","phone":"2100001007",
+                                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                                 "username":"teammember","password":"secret123",
+                                 "systemRole":"USER","active":true,
+                                 "teamIds":[%d]}""".formatted(ids.teamId())))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.teams[0].id").value((int) ids.teamId()));
+    }
+
+    @Test
+    void employeeCanBelongToTwoTeams() throws Exception {
+        var a = DomainFixtures.seed(mvc, session, json);
+        var b = DomainFixtures.seed(mvc, session, json);
+
+        mvc.perform(post("/api/employees").with(csrf()).session(session)
+                        .contentType(APPLICATION_JSON).content("""
+                                {"firstName":"Multi","lastName":"Team",
+                                 "email":"multiteam@pms.test","phone":"2100001008",
+                                 "seniorityLevel":"SENIOR","employeeStatus":"ACTIVE",
+                                 "username":"multiteam","password":"secret123",
+                                 "systemRole":"USER","active":true,
+                                 "teamIds":[%d,%d]}""".formatted(a.teamId(), b.teamId())))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.teams.length()").value(2));
+    }
+
+    @Test
+    void editReplacesTeamMembership() throws Exception {
+        var a = DomainFixtures.seed(mvc, session, json);
+        var b = DomainFixtures.seed(mvc, session, json);
+
+        long id = DomainFixtures.create(mvc, session, json, "/api/employees", """
+                {"firstName":"Move","lastName":"Teams",
+                 "email":"moveteams@pms.test","phone":"2100001009",
+                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                 "username":"moveteams","password":"secret123",
+                 "systemRole":"USER","active":true,
+                 "teamIds":[%d]}""".formatted(a.teamId()));
+
+        mvc.perform(put("/api/employees/" + id).with(csrf()).session(session)
+                        .contentType(APPLICATION_JSON).content("""
+                                {"firstName":"Move","lastName":"Teams",
+                                 "email":"moveteams@pms.test","phone":"2100001009",
+                                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                                 "username":"moveteams",
+                                 "systemRole":"USER","active":true,
+                                 "teamIds":[%d]}""".formatted(b.teamId())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.teams.length()").value(1))
+                .andExpect(jsonPath("$.teams[0].id").value((int) b.teamId()));
+    }
+
+    @Test
+    void createWithUnknownTeamReturns404() throws Exception {
+        mvc.perform(post("/api/employees").with(csrf()).session(session)
+                        .contentType(APPLICATION_JSON).content("""
+                                {"firstName":"Bad","lastName":"Team",
+                                 "email":"badteam@pms.test","phone":"2100001010",
+                                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                                 "username":"badteam","password":"secret123",
+                                 "systemRole":"USER","active":true,
+                                 "teamIds":[99999999]}"""))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void editOmittingTeamIdsPreservesExistingTeams() throws Exception {
+        var a = DomainFixtures.seed(mvc, session, json);
+
+        String createResponse = mvc.perform(post("/api/employees").with(csrf()).session(session)
+                        .contentType(APPLICATION_JSON).content("""
+                                {"firstName":"Keep","lastName":"Teams",
+                                 "email":"keepteams@pms.test","phone":"2100001011",
+                                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                                 "username":"keepteams","password":"secret123",
+                                 "systemRole":"USER","active":true,
+                                 "teamIds":[%d]}""".formatted(a.teamId())))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+        long employeeId = json.readTree(createResponse).get("id").asLong();
+
+        mvc.perform(put("/api/employees/{id}", employeeId).with(csrf()).session(session)
+                        .contentType(APPLICATION_JSON).content("""
+                                {"firstName":"Keep","lastName":"Teams",
+                                 "email":"keepteams@pms.test","phone":"2100001011",
+                                 "seniorityLevel":"MID","employeeStatus":"ACTIVE",
+                                 "username":"keepteams",
+                                 "systemRole":"USER","active":true}"""))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.teams.length()").value(1))
+                .andExpect(jsonPath("$.teams[0].id").value((int) a.teamId()));
+    }
 }
