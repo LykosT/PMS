@@ -20,6 +20,11 @@ export interface AuthUser {
   systemRole: SystemRole
 }
 
+export interface NamedRef {
+  id: number
+  name: string
+}
+
 export interface Employee {
   id: number
   uuid: string
@@ -34,6 +39,10 @@ export interface Employee {
   userActive: boolean | null
   createdAt: string
   updatedAt: string
+  departmentId: number | null
+  departmentName: string | null
+  teams: NamedRef[]
+  businessRoles: NamedRef[]
 }
 
 export interface EmployeeCreatePayload {
@@ -47,6 +56,14 @@ export interface EmployeeCreatePayload {
   password: string
   systemRole: SystemRole
   active: boolean
+  // Assigned unconditionally: sending null clears the department.
+  departmentId?: number | null
+  // Omitted/undefined means "leave membership unchanged"; an explicit empty
+  // array means "clear all".
+  teamIds?: number[]
+  // Omitted/undefined means "leave membership unchanged"; an explicit empty
+  // array means "clear all".
+  businessRoleIds?: number[]
 }
 
 export interface EmployeeUpdatePayload extends Omit<EmployeeCreatePayload, 'password'> {
