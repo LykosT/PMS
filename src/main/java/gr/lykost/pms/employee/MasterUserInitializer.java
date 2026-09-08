@@ -42,22 +42,23 @@ public class MasterUserInitializer implements ApplicationRunner {
             return;
         }
 
-        // Create default admin user
-        EmployeeUserCreateDTO dto = new EmployeeUserCreateDTO(
-                "System",
-                "Administrator",
-                "admin@admin.admin",
-                null,
-                SeniorityLevel.MANAGER,
-                EmployeeStatus.ACTIVE,
-                "admin",
-                "admin",
-                SystemRole.ADMIN,
-                true,
-                new java.util.HashSet<>(),
-                null,
-                new java.util.HashSet<>()
-        );
+        // Create default admin user.
+        // Built via no-arg constructor + named setters (not the positional
+        // @AllArgsConstructor) so future fields added to this DTO can't silently
+        // transpose with each other here; businessRoleIds, departmentId and teamIds
+        // are deliberately left unset (null), which is correct for the seeded admin
+        // (no roles, no department, no teams).
+        EmployeeUserCreateDTO dto = new EmployeeUserCreateDTO();
+        dto.setFirstName("System");
+        dto.setLastName("Administrator");
+        dto.setEmail("admin@admin.admin");
+        dto.setPhone(null);
+        dto.setSeniorityLevel(SeniorityLevel.MANAGER);
+        dto.setEmployeeStatus(EmployeeStatus.ACTIVE);
+        dto.setUsername("admin");
+        dto.setPassword("admin");
+        dto.setSystemRole(SystemRole.ADMIN);
+        dto.setActive(true);
 
         Employee employee = Employee.builder()
                 .firstName(dto.getFirstName())
