@@ -4,7 +4,24 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+
+### Environment ###
+# Real settings live in .env and must never be committed.
+# .env.example is the committed template with fake values.
 .env
+.env.*
+!.env.example
+
+### Local tool files ###
+.claude/settings.local.json
+.superpowers/
+
+### OS ###
+.DS_Store
+Thumbs.db
+
+### Logs ###
+*.log
 
 ### STS ###
 .apt_generated
