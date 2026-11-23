@@ -66,6 +66,17 @@ Add `-v` to also delete the database volume (fresh start).
 
 PostgreSQL only applies the credentials from `.env` when the database volume is first created. To change them later, reset the volume with `docker compose down -v`, which deletes the data.
 
+### Troubleshooting
+
+**The backend stops with `password authentication failed for user "..."`**
+
+The database volume was created with different credentials from the ones now in `.env`, usually because `.env` changed after the first start. Reset the volume, which deletes the data, and start again:
+
+```
+docker compose down -v
+docker compose up -d --build
+```
+
 ---
 
 ## Option 2: Run locally (development)
