@@ -7,8 +7,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ContainerBootTest extends AbstractIntegrationTest {
 
     @Test
-    void applicationContextStartsAgainstMysqlContainer() {
-        assertThat(MYSQL.isRunning()).isTrue();
+    void applicationContextStartsAgainstPostgresContainer() {
+        assertThat(POSTGRES.isRunning()).isTrue();
         assertThat(mvc).isNotNull();
     }
 }
